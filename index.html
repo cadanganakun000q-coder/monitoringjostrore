@@ -11,7 +11,7 @@
 main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{display:block}.eyebrow{font-size:10px;color:#5e91a2;font-weight:900;letter-spacing:1.5px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}h1{margin:5px 0;font-size:30px}h2{font-size:16px;margin:0 0 12px}.muted{color:#6e7e8f;font-size:11px}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#0b1118;border:1px solid #192734;border-radius:13px;padding:15px}.label{font-size:10px;color:#708093;font-weight:900}.value{font-size:24px;font-weight:900;margin-top:8px}.green{color:#21e6a4}.cyan{color:#61e9ff}.yellow{color:#ffd34d}.purple{color:#c397ff}
 .controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}.check{display:flex;align-items:center;gap:6px;color:#9aa8b7;font-size:11px}.table{overflow:auto;background:#080d13;border:1px solid #192734;border-radius:13px}.thead,.tr{display:grid;grid-template-columns:1.5fr .9fr .9fr .65fr .55fr .6fr .7fr 1fr .7fr;min-width:1100px;align-items:center}.thead{padding:11px 14px;color:#627184;font-size:9px;font-weight:900;border-bottom:1px solid #192734}.tr{padding:13px 14px;border-bottom:1px solid #121d26}.name{font-weight:900}.meta{font-size:9px;color:#617284;margin-top:4px}.blur{filter:blur(7px);user-select:none}.status{font-size:9px;font-weight:900;padding:5px 7px;border-radius:6px}.ready{color:#1ee6a4;background:#071d18}.sold{color:#ffd34d;background:#211a08}.del{background:#2a0d15;border:1px solid #6d2639;color:#ff718d;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}
-.calc{margin-top:15px}.calcrow{display:grid;grid-template-columns:35px 1.5fr 1fr 120px;gap:8px;align-items:center;border-top:1px solid #17232e;padding:10px 0}.rate{background:#071018;border:1px solid #203746;color:#fff;border-radius:6px;padding:7px}.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.totalbox{background:#070c12;border:1px solid #1b3441;border-radius:9px;padding:12px}.totalbox small{color:#68798a}.totalbox b{display:block;color:#c1f2ff;font-size:18px;margin-top:6px}
+.calc{margin-top:15px}.calcrow{display:grid;grid-template-columns:35px 1.5fr 1fr 120px;gap:8px;align-items:center;border-top:1px solid #17232e;padding:10px 0}.rate{background:#071018;border:1px solid #203746;color:#fff;border-radius:6px;padding:7px;width:100%}.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.totalbox{background:#070c12;border:1px solid #1b3441;border-radius:9px;padding:12px}.totalbox small{color:#68798a}.totalbox b{display:block;color:#c1f2ff;font-size:18px;margin-top:6px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.row{display:flex;justify-content:space-between;border-top:1px solid #17232e;padding:8px 0;color:#748395}.row b{color:#eaf1f6}.online{color:#20e6a4}.offline{color:#ff6480}.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.accountpick{display:grid;grid-template-columns:30px 1fr auto;gap:8px;padding:11px;border-bottom:1px solid #17232e;align-items:center}.pass{background:#071018;border:1px solid #203746;color:white;border-radius:7px;padding:8px}.hide{display:none!important}
 @media(max-width:850px){.cards,.grid3{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:1fr}}@media(max-width:550px){.cards,.grid3{grid-template-columns:1fr}.top{overflow:auto}.logo{display:none}}
 </style>
@@ -22,7 +22,11 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 .game-map .gm-game{font-weight:900;color:#c8f5ff;margin-top:4px}
 .game-map .gm-map{font-size:11px;color:#8fa4b5;margin-top:3px}
 .playing{color:#21e6a4;font-size:9px;font-weight:900}
-.item-tag{display:inline-block;background:#0f222e;border:1px solid #244356;border-radius:4px;padding:2px 6px;margin:2px;font-size:10px;color:#9fe3f3}
+.item-tag{display:inline-block;background:#0f222e;border:1px solid #244356;border-radius:4px;padding:3px 8px;margin:3px;font-size:11px;color:#9fe3f3}
+.mutation-rainbow{border-color:#ff6bda;color:#ff9be7;background:#2b0c26}
+.mutation-gold{border-color:#ffd700;color:#ffeb7a;background:#2b2405}
+.mutation-silver{border-color:#a0b2c6;color:#e1eefb;background:#141c24}
+.spec-box{margin-top:10px;padding:8px;background:#060a0e;border-radius:8px;border:1px solid #131f2b}
 </style>
 </head>
 <body>
@@ -58,16 +62,20 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 <label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
 <label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
 <label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
-<label class="check"><input id="hideCalc" type="checkbox" checked> Hide calculator</label>
+<label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
 </div>
 <div class="table">
 <div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY / VALUE</div><div>LEVEL</div><div>GAME</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
 <div id="selling-table-body">
-<!-- Dynamic Accounts Rows Will Be Rendered Here -->
+<!-- Dynamic Accounts Rows -->
 </div>
 </div>
-<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Estimasi total harga penjualan akun aktif.</div>
-<div class="totals"><div class="totalbox"><small>TOTAL VALUE DETECTED</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED ESTIMATION</small><b id="calculated">Rp 0</b></div></div></div>
+<div class="panel calc" id="calc">
+<h2>🧮 Manual Rate & Item Selling Calculator</h2>
+<div class="muted">Centang item/spesifikasi yang ingin dijual dan atur rate harga manual per item.</div>
+<div id="calc-items-list" style="margin-top:10px"></div>
+<div class="totals"><div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED ESTIMATION (MANUAL RATE)</small><b id="calculated">Rp 0</b></div></div>
+</div>
 </section>
 
 <section class="page" id="monitoring">
@@ -106,6 +114,40 @@ $('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
 $('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
 $('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
 
+// --- HELPER FORMATTER ANGKA RINGKAS (K, M, B) ---
+function formatShortNumber(num) {
+    let n = parseFloat(num);
+    if (isNaN(n)) return num || '0';
+    if (n >= 1e9) return (n / 1e9).toFixed(2).replace(/\.00$/, '') + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(2).replace(/\.00$/, '') + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(2).replace(/\.00$/, '') + 'K';
+    return n.toString();
+}
+
+// Memory Penyimpan State Rates Manual dan Toggle Checkbox Item
+const manualRates = {};
+const itemCheckState = {};
+
+function calculateCustomTotal() {
+    let calcSum = 0;
+    const calcRows = document.querySelectorAll('.calc-row-item');
+    calcRows.forEach(row => {
+        const checkbox = row.querySelector('.calc-check');
+        const rateInput = row.querySelector('.rate');
+        const itemKey = row.dataset.key;
+        const baseVal = parseFloat(row.dataset.val) || 0;
+
+        if (checkbox) itemCheckState[itemKey] = checkbox.checked;
+        if (rateInput) manualRates[itemKey] = parseFloat(rateInput.value) || 0;
+
+        if (checkbox && checkbox.checked) {
+            const currentRate = parseFloat(rateInput.value) || 0;
+            calcSum += baseVal * currentRate;
+        }
+    });
+    $('calculated').textContent = 'Rp ' + Math.round(calcSum).toLocaleString('id-ID');
+}
+
 // --- REAL-TIME AUTO DETECT VERCEL BACKEND ENGINE ---
 const API_URL = "https://jostore-backend.vercel.app/api/data";
 
@@ -118,18 +160,19 @@ async function syncDashboardData() {
         let totalValue = 0;
         let onlineCount = bots.length;
 
-        // Reset Containers
         const sellingTable = $('selling-table-body');
         const monitoringGrid = $('monitoring-grid');
         const playersGrid = $('players-grid');
         const aiAccounts = $('ai-account-list');
         const aiPasswords = $('ai-password-list');
+        const calcList = $('calc-items-list');
 
         sellingTable.innerHTML = '';
         monitoringGrid.innerHTML = '';
         playersGrid.innerHTML = '';
         aiAccounts.innerHTML = '';
         aiPasswords.innerHTML = '';
+        calcList.innerHTML = '';
 
         if(bots.length === 0) {
             sellingTable.innerHTML = `<div class="tr"><div style="grid-column:1/-1;text-align:center;color:#6e7e8f">Menunggu Bot Roblox Terhubung...</div></div>`;
@@ -140,14 +183,23 @@ async function syncDashboardData() {
             const botName = bot.bot_name || ('PC Bot - ' + username);
             const status = bot.status || 'ONLINE';
             const level = bot.level || bot.lvl || 1;
-            const money = bot.total_value || bot.money || 0;
+            const rawMoney = bot.total_value || bot.money || 0;
+            const moneyDisplay = formatShortNumber(rawMoney);
             const gameName = bot.game_name || 'Roblox Game';
             const mapName = bot.map_name || 'Main Map';
             const items = Array.isArray(bot.items) ? bot.items : [];
-            const itemSpecs = bot.item_specs || {};
+            const specs = bot.item_specs || {};
 
-            totalItems += items.length;
-            totalValue += money;
+            // Spesifikasi Auto-Detect Baru (dengan fallback bawaan)
+            const incomePerSec = formatShortNumber(specs.income_sec || specs.income || 0);
+            const speedDisplay = formatShortNumber(specs.speed || 0);
+            const treadmillLvl = specs.treadmill_level || specs.treadmill || 1;
+            const petPenLvl = specs.pet_pen || specs.pen_level || 1;
+            const petsList = Array.isArray(specs.pets) ? specs.pets : [];
+            const eggsList = Array.isArray(specs.eggs) ? specs.eggs : [];
+
+            totalItems += items.length + petsList.length + eggsList.length;
+            totalValue += rawMoney;
 
             // 1. Render Table Selling Accounts
             const tr = document.createElement('div');
@@ -155,13 +207,13 @@ async function syncDashboardData() {
             tr.innerHTML = `
                 <div><div class="name user ${$('hideUser').checked?'blur':''}">${username}</div><div class="meta">${botName}</div></div>
                 <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
-                <div>$${money.toLocaleString('id-ID')}</div>
-                <div>Lvl ${level}</div>
-                <div>${gameName}</div>
-                <div>${items.length} Items</div>
+                <div>💰 ${moneyDisplay}</div>
+                <div>⚡ Lvl ${level}</div>
+                <div>🎮 ${gameName}</div>
+                <div>🎒 ${items.length + petsList.length} Items</div>
                 <div>10/10</div>
                 <div><span class="status ready">READY</span></div>
-                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(money * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
+                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(rawMoney * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
             `;
             sellingTable.appendChild(tr);
 
@@ -177,32 +229,66 @@ async function syncDashboardData() {
             `;
             monitoringGrid.appendChild(mPanel);
 
-            // 3. Render Players & Item Specifications
+            // 3. Render Players & Detail Spesifikasi (dengan Ikon)
             const pPanel = document.createElement('div');
             pPanel.className = 'panel';
             
-            let itemsHTML = items.map(it => {
-                let specStr = itemSpecs[it] ? ` (${itemSpecs[it]})` : '';
-                return `<span class="item-tag">${it}${specStr}</span>`;
+            let petsHTML = petsList.map(p => {
+                let mutClass = p.mutation ? `mutation-${p.mutation.toLowerCase()}` : '';
+                return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg) [${p.mutation || 'Normal'}]</span>`;
             }).join('') || '<span style="color:#5e91a2">Kosong</span>';
+
+            let eggsHTML = eggsList.map(e => {
+                let mutClass = e.mutation ? `mutation-${e.mutation.toLowerCase()}` : '';
+                return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'} (${e.weight || '0'}kg) [${e.mutation || 'Normal'}]</span>`;
+            }).join('') || '<span style="color:#5e91a2">Kosong</span>';
+
+            let itemsHTML = items.map(it => `<span class="item-tag">🎒 ${it}</span>`).join('');
 
             pPanel.innerHTML = `
                 <b class="online">● ONLINE · ${botName}</b><h2 class="user ${$('hideUser').checked?'blur':''}">${username}</h2>
                 <div class="game-map">
                     <div class="gm-label">🎮 CURRENT GAME</div>
                     <div class="gm-game">${gameName}</div>
-                    <div class="gm-map">🗺️ Map / Place: ${mapName} <span class="playing">· SEDANG BERMAIN</span></div>
+                    <div class="gm-map">🗺️ Map: ${mapName} <span class="playing">· SEDANG BERMAIN</span></div>
                 </div>
-                <div class="row"><span>Level</span><b>Level ${level}</b></div>
-                <div class="row"><span>Total Money / Value</span><b>$${money.toLocaleString('id-ID')}</b></div>
+                <div class="spec-box">
+                    <div class="row"><span>💰 Money Balance</span><b>${moneyDisplay}</b></div>
+                    <div class="row"><span>⚡ Speed</span><b>${speedDisplay} m/b</b></div>
+                    <div class="row"><span>📈 Income / Sec</span><b>${incomePerSec} /s</b></div>
+                    <div class="row"><span>🏃 Treadmill Level</span><b>Lvl ${treadmillLvl}</b></div>
+                    <div class="row"><span>🏠 Pet Pen Level</span><b>Lvl ${petPenLvl}</b></div>
+                </div>
                 <div style="margin-top:10px">
-                    <div class="gm-label" style="margin-bottom:6px">🎒 DETECTED ITEMS & SPECS (${items.length}):</div>
-                    <div>${itemsHTML}</div>
+                    <div class="gm-label" style="margin-bottom:6px">🐾 TOTAL PETS (${petsList.length}):</div>
+                    <div>${petsHTML}</div>
                 </div>
+                <div style="margin-top:8px">
+                    <div class="gm-label" style="margin-bottom:6px">🥚 UNPLACED EGGS (${eggsList.length}):</div>
+                    <div>${eggsHTML}</div>
+                </div>
+                ${itemsHTML ? `<div style="margin-top:8px"><div class="gm-label" style="margin-bottom:6px">🎒 BACKPACK ITEMS:</div><div>${itemsHTML}</div></div>` : ''}
             `;
             playersGrid.appendChild(pPanel);
 
-            // 4. Render AI Input Account Pickers
+            // 4. Render Manual Rate Calculator Rows di Tab Selling
+            const accKey = username;
+            const isChecked = itemCheckState[accKey] !== undefined ? itemCheckState[accKey] : true;
+            const userRate = manualRates[accKey] !== undefined ? manualRates[accKey] : 10;
+
+            const calcRow = document.createElement('div');
+            calcRow.className = 'calcrow calc-row-item';
+            calcRow.dataset.key = accKey;
+            calcRow.dataset.val = rawMoney;
+            calcRow.innerHTML = `
+                <input class="calc-check" type="checkbox" ${isChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
+                <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:#607789">(${gameName})</small></div>
+                <div><input class="rate" type="number" value="${userRate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
+                <div style="text-align:right;font-weight:bold;color:#61e9ff">Rp ${(rawMoney * userRate).toLocaleString('id-ID')}</div>
+            `;
+            calcList.appendChild(calcRow);
+
+            // 5. Render AI Input
             aiAccounts.innerHTML += `<div class="accountpick"><input type="checkbox" checked><b class="user ${$('hideUser').checked?'blur':''}">${username}</b><span>${botName}</span></div>`;
             aiPasswords.innerHTML += `<div class="accountpick"><span class="user ${$('hideUser').checked?'blur':''}">${username}</span><input class="pass" type="password" placeholder="Password"></div>`;
         });
@@ -219,7 +305,7 @@ async function syncDashboardData() {
         $('sell-active').textContent = onlineCount;
 
         $('total').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
-        $('calculated').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
+        calculateCustomTotal();
 
     } catch (error) {
         console.error("Auto-Detect Fetch Error:", error);
