@@ -3,125 +3,463 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JOSTORE Preview & Monitoring</title>
+<title>JOSTORE Enterprise - Luxury Monitoring Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#070b10;color:#e8eef5;font:14px Arial,sans-serif}
-.top{position:sticky;top:0;z-index:20;height:58px;background:#080d13;border-bottom:1px solid #1b2835;display:flex;align-items:center;gap:8px;padding:8px 14px}
-.logo{font-weight:900;color:#62e7ff;margin-right:12px;font-size:18px}.top button{background:#0b151e;color:#9ce8f7;border:1px solid #203746;border-radius:8px;padding:9px 12px;font-weight:800;cursor:pointer}.top button.active{background:#10303c;border-color:#2a8da5}.top .shot{margin-left:auto;color:#ffd75a;border-color:#705a20}
-main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{display:block}.eyebrow{font-size:10px;color:#5e91a2;font-weight:900;letter-spacing:1.5px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}h1{margin:5px 0;font-size:30px}h2{font-size:16px;margin:0 0 12px}.muted{color:#6e7e8f;font-size:11px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#0b1118;border:1px solid #192734;border-radius:13px;padding:15px}.label{font-size:10px;color:#708093;font-weight:900}.value{font-size:24px;font-weight:900;margin-top:8px}.green{color:#21e6a4}.cyan{color:#61e9ff}.yellow{color:#ffd34d}.purple{color:#c397ff}
-.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}.check{display:flex;align-items:center;gap:6px;color:#9aa8b7;font-size:11px}.table{overflow:auto;background:#080d13;border:1px solid #192734;border-radius:13px}
-.thead,.tr{display:grid;grid-template-columns:1.3fr .8fr 1.1fr .6fr 1.8fr .6fr .5fr .6fr .7fr;min-width:1200px;align-items:center}
-.thead{padding:11px 14px;color:#627184;font-size:9px;font-weight:900;border-bottom:1px solid #192734}.tr{padding:13px 14px;border-bottom:1px solid #121d26}.name{font-weight:900}.meta{font-size:9px;color:#617284;margin-top:4px}.blur{filter:blur(7px);user-select:none}.status{font-size:9px;font-weight:900;padding:5px 7px;border-radius:6px}.ready{color:#1ee6a4;background:#071d18}.sold{color:#ffd34d;background:#211a08}.del{background:#2a0d15;border:1px solid #6d2639;color:#ff718d;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}
-.calc{margin-top:15px}.calcrow{display:grid;grid-template-columns:35px 1.5fr 1fr 120px;gap:8px;align-items:center;border-top:1px solid #17232e;padding:10px 0}.rate{background:#071018;border:1px solid #203746;color:#fff;border-radius:6px;padding:7px;width:100%}.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.totalbox{background:#070c12;border:1px solid #1b3441;border-radius:9px;padding:12px}.totalbox small{color:#68798a}.totalbox b{display:block;color:#c1f2ff;font-size:18px;margin-top:6px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.row{display:flex;justify-content:space-between;border-top:1px solid #17232e;padding:8px 0;color:#748395}.row b{color:#eaf1f6}.online{color:#20e6a4}.offline{color:#ff6480}.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.accountpick{display:grid;grid-template-columns:30px 1fr auto;gap:8px;padding:11px;border-bottom:1px solid #17232e;align-items:center}.pass{background:#071018;border:1px solid #203746;color:white;border-radius:7px;padding:8px}.hide{display:none!important}
-@media(max-width:850px){.cards,.grid3{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:1fr}}@media(max-width:550px){.cards,.grid3{grid-template-columns:1fr}.top{overflow:auto}.logo{display:none}}
-</style>
+:root {
+    --bg-dark: #07090e;
+    --bg-panel: #0d1117;
+    --bg-card: #121824;
+    --gold-primary: #d4af37;
+    --gold-light: #f3e5ab;
+    --gold-dark: #997a15;
+    --gold-glow: rgba(212, 175, 55, 0.15);
+    --border-gold: rgba(212, 175, 55, 0.25);
+    --border-dark: #1e2638;
+    --text-primary: #f0f4f8;
+    --text-muted: #8a99ad;
+    --green-accent: #22c55e;
+    --red-accent: #ef4444;
+}
 
-<style id="game-map-style">
-.game-map{margin-top:12px;padding:10px 11px;border:1px solid #1b3441;border-radius:9px;background:#081018}
-.game-map .gm-label{font-size:9px;color:#607789;font-weight:900;letter-spacing:.7px}
-.game-map .gm-game{font-weight:900;color:#c8f5ff;margin-top:4px}
-.game-map .gm-map{font-size:11px;color:#8fa4b5;margin-top:3px}
-.playing{color:#21e6a4;font-size:9px;font-weight:900}
-.item-tag{display:inline-block;background:#0f222e;border:1px solid #244356;border-radius:4px;padding:3px 8px;margin:3px;font-size:11px;color:#9fe3f3}
-.mutation-rainbow{border-color:#ff6bda;color:#ff9be7;background:#2b0c26}
-.mutation-gold{border-color:#ffd700;color:#ffeb7a;background:#2b2405}
-.mutation-silver{border-color:#a0b2c6;color:#e1eefb;background:#141c24}
-.spec-box{margin-top:10px;padding:8px 12px;background:#060a0e;border-radius:8px;border:1px solid #131f2b}
-.spec-mini{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#94a6b8}
-.calc-subrow{display:flex;align-items:center;gap:12px;padding:6px 0 6px 40px;border-top:1px dashed #14222f;font-size:12px}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+}
+
+/* TOP NAVBAR */
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 64px;
+    background: rgba(13, 17, 23, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+}
+
+.logo {
+    font-weight: 900;
+    color: var(--gold-primary);
+    margin-right: 16px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 12px var(--gold-glow);
+}
+
+.top button {
+    background: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.top button:hover, .top button.active {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+    color: #000;
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.top .shot {
+    margin-left: auto;
+    background: transparent;
+    color: var(--gold-light);
+    border: 1px solid var(--gold-primary);
+}
+
+/* MAIN LAYOUT */
+main {
+    max-width: 1480px;
+    margin: auto;
+    padding: 28px 20px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+.eyebrow {
+    font-size: 11px;
+    color: var(--gold-primary);
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+}
+
+h1 { margin: 6px 0 0; font-size: 28px; font-weight: 800; color: #fff; }
+h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
+.muted { color: var(--text-muted); font-size: 12px; }
+
+/* SUMMARY CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.card, .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-gold);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: 900;
+    margin-top: 10px;
+}
+
+.green { color: var(--green-accent); }
+.cyan, .yellow, .purple { color: var(--gold-light); }
+
+/* CONTROLS */
+.controls {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* RESPONSIVE TABLE STRUCTURE (Mencegah Tumpang Tindih) */
+.table {
+    overflow-x: auto;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+}
+
+.thead, .tr {
+    display: grid;
+    /* Lebar kolom presisi agar data tidak pernah bertabrakan */
+    grid-template-columns: 1.5fr 1.1fr 1fr 0.9fr 2.2fr 1fr 1fr;
+    min-width: 1250px;
+    align-items: center;
+    gap: 12px;
+}
+
+.thead {
+    padding: 14px 20px;
+    color: var(--gold-primary);
+    font-size: 11px;
+    font-weight: 800;
+    border-bottom: 1px solid var(--border-gold);
+    background: rgba(212, 175, 55, 0.03);
+}
+
+.tr {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-dark);
+    transition: background 0.2s;
+}
+
+.tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+.name { font-weight: 800; color: #fff; }
+.meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.blur { filter: blur(6px); user-select: none; }
+
+.status {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.ready { color: var(--green-accent); background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); }
+.sold { color: var(--red-accent); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.del {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--red-accent);
+    color: var(--red-accent);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+/* SPESIFIKASI MINI TERPISAH DENGAN RAPI */
+.spec-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.spec-mini span b {
+    color: var(--gold-light);
+}
+
+/* CALCULATOR PANEL */
+.calc { margin-top: 24px; }
+.calcrow {
+    display: grid;
+    grid-template-columns: 35px 1.5fr 1fr 120px;
+    gap: 12px;
+    align-items: center;
+    border-top: 1px solid var(--border-dark);
+    padding: 12px 0;
+}
+
+.rate {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    width: 100%;
+}
+
+.totals {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.totalbox {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.totalbox small { color: var(--text-muted); font-weight: 700; }
+.totalbox b { display: block; color: var(--gold-primary); font-size: 22px; margin-top: 6px; }
+
+/* PANELS & GRIDS */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.row { display: flex; justify-content: space-between; border-top: 1px solid var(--border-dark); padding: 10px 0; color: var(--text-muted); font-size: 13px; }
+.row b { color: var(--text-primary); }
+.online { color: var(--green-accent); font-size: 12px; }
+.offline { color: var(--red-accent); font-size: 12px; }
+
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.accountpick { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; padding: 12px; border-bottom: 1px solid var(--border-dark); align-items: center; }
+.pass { background: var(--bg-card); border: 1px solid var(--border-gold); color: white; border-radius: 8px; padding: 8px 12px; }
+.hide { display: none !important; }
+
+/* SPEC BOX PLAYER (TERPISAH & RAPI) */
+.game-map {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-gold);
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.02);
+}
+
+.game-map .gm-label { font-size: 10px; color: var(--gold-primary); font-weight: 800; letter-spacing: 1px; }
+.game-map .gm-game { font-weight: 800; color: #fff; margin-top: 4px; font-size: 15px; }
+.game-map .gm-map { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.playing { color: var(--green-accent); font-size: 11px; font-weight: 800; }
+
+.item-tag {
+    display: inline-block;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin: 3px;
+    font-size: 11px;
+    color: var(--text-primary);
+}
+
+.mutation-rainbow { border-color: #ff6bda; color: #ff9be7; background: rgba(255, 107, 218, 0.1); }
+.mutation-gold { border-color: var(--gold-primary); color: var(--gold-light); background: var(--gold-glow); }
+.mutation-silver { border-color: #a0b2c6; color: #e1eefb; background: rgba(160, 178, 198, 0.1); }
+
+.spec-box {
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--bg-card);
+    border-radius: 10px;
+    border: 1px solid var(--border-dark);
+}
+
+.calc-subrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 8px 40px;
+    border-top: 1px dashed var(--border-dark);
+    font-size: 12px;
+}
+
+@media(max-width: 900px) { .cards, .grid3 { grid-template-columns: 1fr 1fr; } .ai-grid { grid-template-columns: 1fr; } }
+@media(max-width: 600px) { .cards, .grid3 { grid-template-columns: 1fr; } .logo { display: none; } }
 </style>
 </head>
 <body>
+
 <nav class="top">
-<div class="logo">◆ JOSTORE</div>
-<button class="active" data-page="dashboard">Dashboard</button>
-<button data-page="selling">🛒 Selling</button>
-<button data-page="monitoring">◉ Monitoring</button>
-<button data-page="players">♟ Players</button>
-<button data-page="ai">✨ AI Input</button>
-<button class="shot" id="shot">📸 Screenshot Mode</button>
+    <div class="logo">◆ JOSTORE</div>
+    <button class="active" data-page="dashboard">Dashboard</button>
+    <button data-page="selling">🛒 Selling</button>
+    <button data-page="monitoring">◉ Monitoring</button>
+    <button data-page="players">♟ Players</button>
+    <button data-page="ai">✨ AI Input</button>
+    <button class="shot" id="shot">📸 Screenshot Mode</button>
 </nav>
+
 <main>
-<section class="page active" id="dashboard">
-<div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Live Auto-Detect Status Dashboard.</div></div></div>
-<div class="cards">
-<div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="dash-ready">0</div></div>
-<div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan" id="dash-online">0</div></div>
-<div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple" id="dash-players">0</div></div>
-<div class="card"><div class="label">TOTAL ITEMS DETECTED</div><div class="value yellow" id="dash-items">0</div></div>
-</div>
-</section>
+    <!-- PAGE 1: DASHBOARD -->
+    <section class="page active" id="dashboard">
+        <div class="head">
+            <div>
+                <div class="eyebrow">JOSTORE · DASHBOARD</div>
+                <h1>Store Overview</h1>
+                <div class="muted">Live Monitoring System & Enterprise Analytics</div>
+            </div>
+        </div>
+        <div class="cards">
+            <div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="dash-ready">0</div></div>
+            <div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan" id="dash-online">0</div></div>
+            <div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple" id="dash-players">0</div></div>
+            <div class="card"><div class="label">TOTAL ITEMS DETECTED</div><div class="value yellow" id="dash-items">0</div></div>
+        </div>
+    </section>
 
-<section class="page" id="selling">
-<div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi otomatis dari Roblox via Vercel API.</div></div><button data-page="ai">✨ AI INPUT</button></div>
-<div class="cards">
-<div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="sell-ready">0</div></div>
-<div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan" id="sell-items">0</div></div>
-<div class="card"><div class="label">TOTAL SELLING VALUE</div><div class="value cyan private-price" id="sell-value">Rp 0</div></div>
-<div class="card"><div class="label">ACTIVE BOTS</div><div class="value yellow" id="sell-active">0</div></div>
-</div>
-<div class="controls">
-<label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
-<label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
-<label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
-<label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
-</div>
-<div class="table">
-<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>INCOME / SEC</div><div>LEVEL</div><div>SPESIFIKASI DETAIL AKUN</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
-<div id="selling-table-body">
-<!-- Dynamic Accounts Rows -->
-</div>
-</div>
-<div class="panel calc" id="calc">
-<h2>🧮 Manual Rate Calculator & Specification Selection</h2>
-<div class="muted">Pilih spesifikasi (Speed / Income/s) dengan centang untuk dihitung serta sesuaikan Rate manualnya.</div>
-<div id="calc-items-list" style="margin-top:10px"></div>
-<div class="totals">
-<div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">0</b></div>
-<div class="totalbox"><small>CALCULATED ESTIMATION (MANUAL RATE)</small><b id="calculated">Rp 0</b></div>
-</div>
-</div>
-</section>
+    <!-- PAGE 2: SELLING -->
+    <section class="page" id="selling">
+        <div class="head">
+            <div>
+                <div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div>
+                <h1>Selling Accounts</h1>
+                <div class="muted">Data akun terdeteksi real-time & tersimpan otomatis di browser.</div>
+            </div>
+            <button data-page="ai" style="background:var(--gold-primary);color:#000;font-weight:800;border:none;padding:10px 16px;border-radius:8px;cursor:pointer">✨ AI INPUT</button>
+        </div>
+        
+        <div class="cards">
+            <div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="sell-ready">0</div></div>
+            <div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan" id="sell-items">0</div></div>
+            <div class="card"><div class="label">TOTAL SELLING VALUE</div><div class="value cyan private-price" id="sell-value">Rp 0</div></div>
+            <div class="card"><div class="label">ACTIVE BOTS</div><div class="value yellow" id="sell-active">0</div></div>
+        </div>
 
-<section class="page" id="monitoring">
-<div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device & Bot Monitoring</h1></div></div>
-<div class="grid3" id="monitoring-grid">
-<!-- Dynamic Device Panels -->
-</div>
-</section>
+        <div class="controls">
+            <label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
+            <label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
+            <label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
+            <label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
+        </div>
 
-<section class="page" id="players">
-<div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts & Inventory Specs</h1><div class="muted">Data inventaris, level, game, item & spesifikasi detail akun Roblox.</div></div></div>
-<div class="grid3" id="players-grid">
-<!-- Dynamic Players Panels -->
-</div>
-</section>
+        <div class="table">
+            <div class="thead">
+                <div>ACCOUNT & BOT</div>
+                <div>PASSWORD</div>
+                <div>INCOME / SEC</div>
+                <div>LEVEL</div>
+                <div>SPESIFIKASI DETAIL AKUN</div>
+                <div>STATUS</div>
+                <div>SELLING PRICE</div>
+            </div>
+            <div id="selling-table-body">
+                <!-- Rows Akun Dinamis -->
+            </div>
+        </div>
 
-<section class="page" id="ai">
-<div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun yang terdeteksi lalu isi password.</div></div></div>
-<div class="panel ai-grid">
-<div><h2>Account Terdeteksi</h2><div id="ai-account-list"></div></div>
-<div><h2>Password Setup</h2><div id="ai-password-list"></div><button style="margin-top:10px;width:100%;padding:10px;background:#10303c;border:1px solid #2a8da5;color:#61e9ff;border-radius:8px;font-weight:900;cursor:pointer">💾 Simpan Password Terpilih</button></div>
-</div>
-</section>
+        <div class="panel calc" id="calc">
+            <h2>🧮 Manual Rate Calculator & Specification Selection</h2>
+            <div class="muted">Pilih spesifikasi yang ingin dihitung serta sesuaikan nilai Rate-nya.</div>
+            <div id="calc-items-list" style="margin-top:14px"></div>
+            <div class="totals">
+                <div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">0</b></div>
+                <div class="totalbox"><small>CALCULATED ESTIMATION (MANUAL RATE)</small><b id="calculated">Rp 0</b></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: MONITORING -->
+    <section class="page" id="monitoring">
+        <div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device & Bot Monitoring</h1></div></div>
+        <div class="grid3" id="monitoring-grid"></div>
+    </section>
+
+    <!-- PAGE 4: PLAYERS -->
+    <section class="page" id="players">
+        <div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts & Inventory Specs</h1></div></div>
+        <div class="grid3" id="players-grid"></div>
+    </section>
+
+    <!-- PAGE 5: AI INPUT -->
+    <section class="page" id="ai">
+        <div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1></div></div>
+        <div class="panel ai-grid">
+            <div><h2>Account Terdeteksi</h2><div id="ai-account-list"></div></div>
+            <div>
+                <h2>Password Setup</h2>
+                <div id="ai-password-list"></div>
+                <button style="margin-top:16px;width:100%;padding:12px;background:var(--gold-primary);border:none;color:#000;border-radius:8px;font-weight:900;cursor:pointer">💾 Simpan Password Terpilih</button>
+            </div>
+        </div>
+    </section>
 </main>
 
 <script>
-// --- NAVIGATION & UI BLUR SYSTEM ---
+// --- NAVIGATION & SCREENSHOT BLUR SYSTEM ---
 const pages=[...document.querySelectorAll('.page')], buttons=[...document.querySelectorAll('[data-page]')];
 function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===id))}
 buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
 const $=id=>document.getElementById(id);
 function blurSet(selector,on){document.querySelectorAll(selector).forEach(x=>x.classList.toggle('blur',on))}
+
 $('hideUser').onchange=e=>blurSet('.user',e.target.checked);
 $('hidePass').onchange=e=>blurSet('.password',e.target.checked);
 $('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
 $('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
-$('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
+$('shot').onclick=()=>{
+    document.body.classList.toggle('shotmode');
+    let on=document.body.classList.contains('shotmode');
+    blurSet('.user,.password,.private-price',on);
+    $('calc').classList.toggle('hide',on);
+    $('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode';
+};
 
-// --- HELPER PARSER & FORMATTER NUMERIK DETAIL (AMBIL ANGKA DEPAN SAJA) ---
+// --- HELPER PARSER NUMERIK ---
 function parseGameValue(val) {
     if (val === undefined || val === null) return 0;
     if (typeof val === 'number') return val;
@@ -142,7 +480,7 @@ function formatShortNumber(num) {
     return n.toString();
 }
 
-// Memory State untuk Toggle dan Manual Rate
+// Memory State & Kalkulator
 const calcState = {};
 
 function calculateCustomTotal() {
@@ -174,192 +512,246 @@ function calculateCustomTotal() {
     $('calculated').textContent = 'Rp ' + Math.round(calcSum).toLocaleString('id-ID');
 }
 
-// --- REAL-TIME AUTO DETECT VERCEL BACKEND ENGINE ---
+// --- LOCAL STORAGE AUTO-SAVE SYSTEM ---
+const STORAGE_KEY = 'jostore_cache_bots';
+
+function getStoredBots() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
+function saveBotsToStorage(newBots) {
+    let stored = getStoredBots();
+    newBots.forEach(newBot => {
+        let idx = stored.findIndex(b => b.username === newBot.username);
+        newBot.status = 'ONLINE';
+        newBot.lastSeen = Date.now();
+        if (idx !== -1) {
+            stored[idx] = newBot;
+        } else {
+            stored.push(newBot);
+        }
+    });
+
+    // Tandai status offline jika tidak ada update dalam 15 detik
+    stored.forEach(bot => {
+        if (Date.now() - (bot.lastSeen || 0) > 15000) {
+            bot.status = 'OFFLINE';
+        }
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    return stored;
+}
+
+// --- REAL-TIME DATA RENDERER ENGINE ---
 const API_URL = "https://jostore-backend.vercel.app/api/data";
 
 async function syncDashboardData() {
+    let bots = getStoredBots();
+
     try {
         const response = await fetch(API_URL);
-        const bots = await response.json();
-        
-        let totalItems = 0;
-        let totalRawIncome = 0;
-        let totalRawMoney = 0;
-        let onlineCount = bots.length;
-
-        const sellingTable = $('selling-table-body');
-        const monitoringGrid = $('monitoring-grid');
-        const playersGrid = $('players-grid');
-        const aiAccounts = $('ai-account-list');
-        const aiPasswords = $('ai-password-list');
-        const calcList = $('calc-items-list');
-
-        sellingTable.innerHTML = '';
-        monitoringGrid.innerHTML = '';
-        playersGrid.innerHTML = '';
-        aiAccounts.innerHTML = '';
-        aiPasswords.innerHTML = '';
-        calcList.innerHTML = '';
-
-        if(bots.length === 0) {
-            sellingTable.innerHTML = `<div class="tr"><div style="grid-column:1/-1;text-align:center;color:#6e7e8f">Menunggu Bot Roblox Terhubung...</div></div>`;
+        if (response.ok) {
+            const fetchedBots = await response.json();
+            if (Array.isArray(fetchedBots) && fetchedBots.length > 0) {
+                bots = saveBotsToStorage(fetchedBots);
+            }
         }
-
-        bots.forEach(bot => {
-            const username = bot.username || 'Unknown Player';
-            const botName = bot.bot_name || ('PC Bot - ' + username);
-            const status = bot.status || 'ONLINE';
-            const level = bot.level || bot.lvl || 1;
-            const gameName = bot.game_name || 'Roblox Game';
-            const mapName = bot.map_name || 'Main Map';
-            const items = Array.isArray(bot.items) ? bot.items : [];
-            const specs = bot.item_specs || bot.specs || {};
-
-            // Auto-Detect Variabel Spesifikasi & Ekstraksi Nilai Angka Depan
-            const rawMoney = parseGameValue(specs.money_balance || specs.money || bot.total_value || bot.money || 0);
-            const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income || 0);
-            const rawSpeed = parseGameValue(specs.speed || 0);
-            const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || 1);
-            const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || 1);
-
-            const moneyDisplay = formatShortNumber(rawMoney);
-            const incomeDisplay = formatShortNumber(rawIncome);
-            const speedDisplay = formatShortNumber(rawSpeed);
-
-            const petsList = Array.isArray(specs.pets) ? specs.pets : [];
-            const eggsList = Array.isArray(specs.eggs) ? specs.eggs : [];
-
-            totalItems += items.length + petsList.length + eggsList.length;
-            totalRawIncome += rawIncome;
-            totalRawMoney += rawMoney;
-
-            // 1. Render Table Selling Accounts
-            const tr = document.createElement('div');
-            tr.className = 'tr account';
-            tr.innerHTML = `
-                <div><div class="name user ${$('hideUser').checked?'blur':''}">${username}</div><div class="meta">${botName}</div></div>
-                <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
-                <div>📈 ${incomeDisplay}/s</div>
-                <div>⚡ Lvl ${level}</div>
-                <div class="spec-mini">
-                    <span>💰 Money: <b>${moneyDisplay}</b></span>
-                    <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
-                    <span>🏃 Treadmill: <b>Lvl ${treadmillLvl}</b> | 🏠 Pen: <b>Lvl ${petPenLvl}</b></span>
-                </div>
-                <div>🎒 ${items.length + petsList.length} Items</div>
-                <div>10/10</div>
-                <div><span class="status ready">READY</span></div>
-                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(rawIncome * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
-            `;
-            sellingTable.appendChild(tr);
-
-            // 2. Render Monitoring Panels
-            const mPanel = document.createElement('div');
-            mPanel.className = 'panel';
-            mPanel.innerHTML = `
-                <b class="online">● ONLINE</b><h2>${botName}</h2>
-                <div class="row"><span>Username</span><b class="user ${$('hideUser').checked?'blur':''}">${username}</b></div>
-                <div class="row"><span>Game</span><b>${gameName}</b></div>
-                <div class="row"><span>Status</span><b>${status}</b></div>
-                <div class="row"><span>Last Update</span><b>${new Date(bot.lastSeen || Date.now()).toLocaleTimeString()}</b></div>
-            `;
-            monitoringGrid.appendChild(mPanel);
-
-            // 3. Render Players & Detail Spesifikasi
-            const pPanel = document.createElement('div');
-            pPanel.className = 'panel';
-            
-            let petsHTML = petsList.map(p => {
-                let mut = p.mutation ? p.mutation.toLowerCase() : 'none';
-                let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
-                return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg) [${p.mutation || 'None'}]</span>`;
-            }).join('') || '<span style="color:#5e91a2">Kosong</span>';
-
-            let eggsHTML = eggsList.map(e => {
-                let mut = e.mutation ? e.mutation.toLowerCase() : 'none';
-                let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
-                return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'} (${e.weight || '0'}kg) [${e.mutation || 'None'}]</span>`;
-            }).join('') || '<span style="color:#5e91a2">Kosong</span>';
-
-            let itemsHTML = items.map(it => `<span class="item-tag">🎒 ${it}</span>`).join('');
-
-            pPanel.innerHTML = `
-                <b class="online">● ONLINE · ${botName}</b><h2 class="user ${$('hideUser').checked?'blur':''}">${username}</h2>
-                <div class="game-map">
-                    <div class="gm-label">🎮 CURRENT GAME</div>
-                    <div class="gm-game">${gameName}</div>
-                    <div class="gm-map">🗺️ Map: ${mapName} <span class="playing">· SEDANG BERMAIN</span></div>
-                </div>
-                <div class="spec-box">
-                    <div class="row"><span>💰 Money Balance</span><b>${moneyDisplay}</b></div>
-                    <div class="row"><span>⚡ Speed</span><b>${speedDisplay} m/b</b></div>
-                    <div class="row"><span>📈 Income / Sec</span><b>${incomeDisplay} /s</b></div>
-                    <div class="row"><span>🏃 Treadmill Level</span><b>Lvl ${treadmillLvl}</b></div>
-                    <div class="row"><span>🏠 Pet Pen Level</span><b>Lvl ${petPenLvl}</b></div>
-                </div>
-                <div style="margin-top:10px">
-                    <div class="gm-label" style="margin-bottom:6px">🐾 TOTAL PETS (${petsList.length}):</div>
-                    <div>${petsHTML}</div>
-                </div>
-                <div style="margin-top:8px">
-                    <div class="gm-label" style="margin-bottom:6px">🥚 UNPLACED EGGS (${eggsList.length}):</div>
-                    <div>${eggsHTML}</div>
-                </div>
-                ${itemsHTML ? `<div style="margin-top:8px"><div class="gm-label" style="margin-bottom:6px">🎒 BACKPACK ITEMS:</div><div>${itemsHTML}</div></div>` : ''}
-            `;
-            playersGrid.appendChild(pPanel);
-
-            // 4. Render Row Kalkulator Manual Rate dengan Checkbox Speed dan Income/sec
-            const savedState = calcState[username] || { speedChecked: true, incomeChecked: true, rate: 10 };
-            const calcRow = document.createElement('div');
-            calcRow.className = 'calc-account-group';
-            calcRow.dataset.user = username;
-            calcRow.dataset.speed = rawSpeed;
-            calcRow.dataset.income = rawIncome;
-            
-            calcRow.innerHTML = `
-                <div class="calcrow">
-                    <div></div>
-                    <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:#607789">(${gameName})</small></div>
-                    <div><input class="rate" type="number" value="${savedState.rate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
-                    <div style="text-align:right;font-weight:bold;color:#61e9ff">Rate Config</div>
-                </div>
-                <div class="calc-subrow">
-                    <input class="check-speed" type="checkbox" ${savedState.speedChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
-                    <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
-                </div>
-                <div class="calc-subrow">
-                    <input class="check-income" type="checkbox" ${savedState.incomeChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
-                    <span>📈 Income / Sec: <b>${incomeDisplay} /s</b></span>
-                </div>
-            `;
-            calcList.appendChild(calcRow);
-
-            // 5. Render AI Input
-            aiAccounts.innerHTML += `<div class="accountpick"><input type="checkbox" checked><b class="user ${$('hideUser').checked?'blur':''}">${username}</b><span>${botName}</span></div>`;
-            aiPasswords.innerHTML += `<div class="accountpick"><span class="user ${$('hideUser').checked?'blur':''}">${username}</span><input class="pass" type="password" placeholder="Password"></div>`;
-        });
-
-        // Update Overview Cards
-        $('dash-ready').textContent = onlineCount;
-        $('dash-online').textContent = onlineCount;
-        $('dash-players').textContent = onlineCount;
-        $('dash-items').textContent = totalItems;
-
-        $('sell-ready').textContent = onlineCount;
-        $('sell-items').textContent = totalItems;
-        $('sell-value').textContent = 'Rp ' + (totalRawIncome * 10).toLocaleString('id-ID');
-        $('sell-active').textContent = onlineCount;
-
-        $('total').textContent = formatShortNumber(totalRawIncome) + ' Income/s (' + formatShortNumber(totalRawMoney) + ' Money)';
-        calculateCustomTotal();
-
     } catch (error) {
-        console.error("Auto-Detect Fetch Error:", error);
+        console.log("Menggunakan data tersimpan (Offline Mode)");
     }
+
+    renderUI(bots);
 }
 
-// Jalankan auto sync setiap 3 detik
+function renderUI(bots) {
+    let totalItems = 0;
+    let totalRawIncome = 0;
+    let totalRawMoney = 0;
+    let onlineCount = 0;
+
+    const sellingTable = $('selling-table-body');
+    const monitoringGrid = $('monitoring-grid');
+    const playersGrid = $('players-grid');
+    const aiAccounts = $('ai-account-list');
+    const aiPasswords = $('ai-password-list');
+    const calcList = $('calc-items-list');
+
+    sellingTable.innerHTML = '';
+    monitoringGrid.innerHTML = '';
+    playersGrid.innerHTML = '';
+    aiAccounts.innerHTML = '';
+    aiPasswords.innerHTML = '';
+    calcList.innerHTML = '';
+
+    if (bots.length === 0) {
+        sellingTable.innerHTML = `<div class="tr"><div style="grid-column:1/-1;text-align:center;color:var(--text-muted)">Menunggu Data Bot Roblox Terhubung...</div></div>`;
+        return;
+    }
+
+    bots.forEach(bot => {
+        const isOnline = bot.status === 'ONLINE';
+        if (isOnline) onlineCount++;
+
+        const username = bot.username || 'Unknown Player';
+        const botName = bot.bot_name || ('PC Bot - ' + username);
+        const status = bot.status || 'OFFLINE';
+        const level = bot.level || bot.lvl || 1;
+        const gameName = bot.game_name || 'Roblox Game';
+        const mapName = bot.map_name || 'Main Map';
+        const items = Array.isArray(bot.items) ? bot.items : [];
+        const specs = bot.item_specs || bot.specs || {};
+
+        const rawMoney = parseGameValue(specs.money_balance || specs.money || bot.total_value || bot.money || 0);
+        const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income || 0);
+        const rawSpeed = parseGameValue(specs.speed || 0);
+        const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || 1);
+        const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || 1);
+
+        const moneyDisplay = formatShortNumber(rawMoney);
+        const incomeDisplay = formatShortNumber(rawIncome);
+        const speedDisplay = formatShortNumber(rawSpeed);
+
+        const petsList = Array.isArray(specs.pets) ? specs.pets : [];
+        const eggsList = Array.isArray(specs.eggs) ? specs.eggs : [];
+
+        totalItems += items.length + petsList.length + eggsList.length;
+        totalRawIncome += rawIncome;
+        totalRawMoney += rawMoney;
+
+        // 1. Table Selling Accounts (Spesifikasi Terpisah Rapi)
+        const tr = document.createElement('div');
+        tr.className = 'tr account';
+        tr.innerHTML = `
+            <div>
+                <div class="name user ${$('hideUser').checked?'blur':''}">${username}</div>
+                <div class="meta">${botName}</div>
+            </div>
+            <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
+            <div>📈 <b>${incomeDisplay}</b>/s</div>
+            <div>⚡ Lvl ${level}</div>
+            <div class="spec-mini">
+                <span>💰 Money: <b>${moneyDisplay}</b></span>
+                <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
+                <span>🏃 Treadmill: <b>Lvl ${treadmillLvl}</b> | 🏠 Pen: <b>Lvl ${petPenLvl}</b></span>
+            </div>
+            <div><span class="status ${isOnline ? 'ready' : 'sold'}">${status}</span></div>
+            <div class="private-price ${$('hidePrice').checked?'blur':''}">
+                Rp ${(rawIncome * 10).toLocaleString('id-ID')}
+                <button class="del" onclick="deleteAccount('${username}')">🗑 HAPUS</button>
+            </div>
+        `;
+        sellingTable.appendChild(tr);
+
+        // 2. Monitoring Panel
+        const mPanel = document.createElement('div');
+        mPanel.className = 'panel';
+        mPanel.innerHTML = `
+            <b class="${isOnline ? 'online' : 'offline'}">● ${status}</b>
+            <h2>${botName}</h2>
+            <div class="row"><span>Username</span><b class="user ${$('hideUser').checked?'blur':''}">${username}</b></div>
+            <div class="row"><span>Game</span><b>${gameName}</b></div>
+            <div class="row"><span>Last Sync</span><b>${new Date(bot.lastSeen || Date.now()).toLocaleTimeString()}</b></div>
+        `;
+        monitoringGrid.appendChild(mPanel);
+
+        // 3. Player Specs Panel
+        const pPanel = document.createElement('div');
+        pPanel.className = 'panel';
+        
+        let petsHTML = petsList.map(p => {
+            let mut = p.mutation ? p.mutation.toLowerCase() : 'none';
+            let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
+            return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg)</span>`;
+        }).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
+
+        let eggsHTML = eggsList.map(e => {
+            let mut = e.mutation ? e.mutation.toLowerCase() : 'none';
+            let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
+            return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'}</span>`;
+        }).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
+
+        pPanel.innerHTML = `
+            <b class="${isOnline ? 'online' : 'offline'}">● ${status} · ${botName}</b>
+            <h2 class="user ${$('hideUser').checked?'blur':''}">${username}</h2>
+            <div class="game-map">
+                <div class="gm-label">🎮 CURRENT GAME</div>
+                <div class="gm-game">${gameName}</div>
+                <div class="gm-map">🗺️ Map: ${mapName} <span class="playing">· MONITORING</span></div>
+            </div>
+            <div class="spec-box">
+                <div class="row"><span>💰 Money Balance</span><b>${moneyDisplay}</b></div>
+                <div class="row"><span>⚡ Speed</span><b>${speedDisplay} m/b</b></div>
+                <div class="row"><span>📈 Income / Sec</span><b>${incomeDisplay} /s</b></div>
+                <div class="row"><span>🏃 Treadmill Level</span><b>Lvl ${treadmillLvl}</b></div>
+                <div class="row"><span>🏠 Pet Pen Level</span><b>Lvl ${petPenLvl}</b></div>
+            </div>
+            <div style="margin-top:12px">
+                <div class="gm-label" style="margin-bottom:6px">🐾 TOTAL PETS (${petsList.length}):</div>
+                <div>${petsHTML}</div>
+            </div>
+            <div style="margin-top:10px">
+                <div class="gm-label" style="margin-bottom:6px">🥚 UNPLACED EGGS (${eggsList.length}):</div>
+                <div>${eggsHTML}</div>
+            </div>
+        `;
+        playersGrid.appendChild(pPanel);
+
+        // 4. Rate Calc
+        const savedState = calcState[username] || { speedChecked: true, incomeChecked: true, rate: 10 };
+        const calcRow = document.createElement('div');
+        calcRow.className = 'calc-account-group';
+        calcRow.dataset.user = username;
+        calcRow.dataset.speed = rawSpeed;
+        calcRow.dataset.income = rawIncome;
+        
+        calcRow.innerHTML = `
+            <div class="calcrow">
+                <div></div>
+                <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:var(--text-muted)">(${gameName})</small></div>
+                <div><input class="rate" type="number" value="${savedState.rate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
+                <div style="text-align:right;font-weight:bold;color:var(--gold-primary)">Rate Config</div>
+            </div>
+            <div class="calc-subrow">
+                <input class="check-speed" type="checkbox" ${savedState.speedChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
+                <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
+            </div>
+            <div class="calc-subrow">
+                <input class="check-income" type="checkbox" ${savedState.incomeChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
+                <span>📈 Income / Sec: <b>${incomeDisplay} /s</b></span>
+            </div>
+        `;
+        calcList.appendChild(calcRow);
+
+        // 5. AI Input
+        aiAccounts.innerHTML += `<div class="accountpick"><input type="checkbox" checked><b class="user ${$('hideUser').checked?'blur':''}">${username}</b><span>${botName}</span></div>`;
+        aiPasswords.innerHTML += `<div class="accountpick"><span class="user ${$('hideUser').checked?'blur':''}">${username}</span><input class="pass" type="password" placeholder="Password"></div>`;
+    });
+
+    // Update Overall Status Cards
+    $('dash-ready').textContent = onlineCount;
+    $('dash-online').textContent = onlineCount;
+    $('dash-players').textContent = bots.length;
+    $('dash-items').textContent = totalItems;
+
+    $('sell-ready').textContent = onlineCount;
+    $('sell-items').textContent = totalItems;
+    $('sell-value').textContent = 'Rp ' + (totalRawIncome * 10).toLocaleString('id-ID');
+    $('sell-active').textContent = onlineCount;
+
+    $('total').textContent = formatShortNumber(totalRawIncome) + ' Income/s (' + formatShortNumber(totalRawMoney) + ' Money)';
+    calculateCustomTotal();
+}
+
+function deleteAccount(username) {
+    let stored = getStoredBots();
+    stored = stored.filter(b => b.username !== username);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    renderUI(stored);
+}
+
+// Synchronize every 3 seconds
 setInterval(syncDashboardData, 3000);
 syncDashboardData();
 </script>
