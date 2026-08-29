@@ -78,12 +78,12 @@ body {
     margin-left: auto;
     background: transparent;
     color: var(--gold-light);
-    border: 1px solid var(--gold-primary);
+    border: 1px solid var(--border-gold);
 }
 
 /* MAIN LAYOUT */
 main {
-    max-width: 1480px;
+    max-width: 1600px;
     margin: auto;
     padding: 28px 20px;
 }
@@ -158,7 +158,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
     cursor: pointer;
 }
 
-/* RESPONSIVE TABLE STRUCTURE (Disesuaikan Rapi Tanpa Dempet) */
+/* RESPONSIVE TABLE STRUCTURE (11 KOLOM RAPI TANPA DEMPET) */
 .table {
     overflow-x: auto;
     background: var(--bg-panel);
@@ -168,11 +168,11 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
 
 .thead, .tr {
     display: grid;
-    /* Grid 8 Kolom Presisi agar tidak bertabrakan */
-    grid-template-columns: 1.8fr 1.2fr 1.2fr 1.1fr 1.1fr 1.1fr 0.9fr 1.5fr;
-    min-width: 1280px;
+    /* Grid 11 Kolom Presisi agar lega & tidak bertabrakan */
+    grid-template-columns: 200px 110px 120px 120px 110px 110px 110px 80px 80px 130px 160px;
+    min-width: 1440px;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
 }
 
 .thead {
@@ -189,6 +189,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
     padding: 16px 20px;
     border-bottom: 1px solid var(--border-dark);
     transition: background 0.2s;
+    font-size: 13px;
 }
 
 .tr:hover { background: rgba(255, 255, 255, 0.02); }
@@ -197,17 +198,30 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
 .meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 .blur { filter: blur(6px); user-select: none; }
 
-.status {
+/* TOGGLE STATUS READY / SOLD */
+.status-toggle {
     font-size: 10px;
     font-weight: 800;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 20px;
-    display: inline-block;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    width: 100%;
     text-align: center;
 }
 
-.ready { color: var(--green-accent); background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); }
-.sold { color: var(--red-accent); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); }
+.status-toggle.ready { 
+    color: var(--green-accent); 
+    background: rgba(34, 197, 94, 0.1); 
+    border: 1px solid rgba(34, 197, 94, 0.4); 
+}
+
+.status-toggle.sold { 
+    color: var(--red-accent); 
+    background: rgba(239, 68, 68, 0.1); 
+    border: 1px solid rgba(239, 68, 68, 0.4); 
+}
 
 .del {
     background: rgba(239, 68, 68, 0.15);
@@ -218,7 +232,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
     font-size: 10px;
     font-weight: 800;
     cursor: pointer;
-    margin-left: 8px;
+    margin-left: 6px;
 }
 
 /* CALCULATOR PANEL */
@@ -379,10 +393,13 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
             <div class="thead">
                 <div>ACCOUNT & BOT</div>
                 <div>PASSWORD</div>
+                <div>MONEY</div>
                 <div>INCOME / SEC</div>
                 <div>SPEED</div>
                 <div>LV. TREADMILL</div>
                 <div>LV. PEN</div>
+                <div>PETS</div>
+                <div>EGG</div>
                 <div>STATUS</div>
                 <div>SELLING PRICE</div>
             </div>
@@ -493,7 +510,6 @@ function calculateCustomTotal() {
         calcState[username].incomeChecked = incomeCheck ? incomeCheck.checked : true;
         calcState[username].rate = rate;
 
-        // Hanya sertakan dalam kalkulasi jika CENTANG AKUN DIAKTIFKAN
         if (accCheck && accCheck.checked) {
             let accSubtotal = 0;
             if (speedCheck && speedCheck.checked) accSubtotal += speedVal;
@@ -517,24 +533,29 @@ function saveBotsToStorage(newBots) {
     let stored = getStoredBots();
     newBots.forEach(newBot => {
         let idx = stored.findIndex(b => b.username === newBot.username);
-        newBot.status = 'ONLINE';
-        newBot.lastSeen = Date.now();
+        // Pertahankan status sale (READY/SOLD) jika pernah di-toggle manual
         if (idx !== -1) {
-            stored[idx] = newBot;
+            newBot.saleStatus = stored[idx].saleStatus || 'READY';
+            stored[idx] = { ...stored[idx], ...newBot, lastSeen: Date.now() };
         } else {
+            newBot.saleStatus = newBot.saleStatus || 'READY';
+            newBot.lastSeen = Date.now();
             stored.push(newBot);
-        }
-    });
-
-    // Tandai status offline jika tidak ada update dalam 15 detik
-    stored.forEach(bot => {
-        if (Date.now() - (bot.lastSeen || 0) > 15000) {
-            bot.status = 'OFFLINE';
         }
     });
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
     return stored;
+}
+
+function toggleSaleStatus(username) {
+    let stored = getStoredBots();
+    let idx = stored.findIndex(b => b.username === username);
+    if (idx !== -1) {
+        stored[idx].saleStatus = (stored[idx].saleStatus === 'SOLD') ? 'READY' : 'SOLD';
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+        renderUI(stored);
+    }
 }
 
 // --- REAL-TIME DATA RENDERER ENGINE ---
@@ -563,6 +584,7 @@ function renderUI(bots) {
     let totalRawIncome = 0;
     let totalRawMoney = 0;
     let onlineCount = 0;
+    let readySaleCount = 0;
 
     const sellingTable = $('selling-table-body');
     const monitoringGrid = $('monitoring-grid');
@@ -584,12 +606,14 @@ function renderUI(bots) {
     }
 
     bots.forEach(bot => {
-        const isOnline = bot.status === 'ONLINE';
+        const isOnline = (Date.now() - (bot.lastSeen || 0)) < 15000;
         if (isOnline) onlineCount++;
+
+        const saleStatus = bot.saleStatus || 'READY';
+        if (saleStatus === 'READY') readySaleCount++;
 
         const username = bot.username || 'Unknown Player';
         const botName = bot.bot_name || ('PC Bot - ' + username);
-        const status = bot.status || 'OFFLINE';
         const gameName = bot.game_name || 'Roblox Game';
         const mapName = bot.map_name || 'Main Map';
         const items = Array.isArray(bot.items) ? bot.items : [];
@@ -597,23 +621,23 @@ function renderUI(bots) {
 
         // Auto-detect variasi kunci spesifikasi dari JSON
         const rawMoney = parseGameValue(specs.money_balance || specs.money || bot.total_value || bot.money || 0);
-        const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income || 0);
+        const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income_sec || bot.income || 0);
         const rawSpeed = parseGameValue(specs.speed || bot.speed || 0);
-        const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || specs.lvl_treadmill || 1);
-        const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || specs.lvl_pen || 1);
+        const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || bot.treadmill_level || 1);
+        const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || bot.pet_pen || 1);
+
+        const petsList = Array.isArray(specs.pets) ? specs.pets : (Array.isArray(bot.pets) ? bot.pets : []);
+        const eggsList = Array.isArray(specs.eggs) ? specs.eggs : (Array.isArray(bot.eggs) ? bot.eggs : []);
 
         const moneyDisplay = formatShortNumber(rawMoney);
         const incomeDisplay = formatShortNumber(rawIncome);
         const speedDisplay = formatShortNumber(rawSpeed);
 
-        const petsList = Array.isArray(specs.pets) ? specs.pets : [];
-        const eggsList = Array.isArray(specs.eggs) ? specs.eggs : [];
-
         totalItems += items.length + petsList.length + eggsList.length;
         totalRawIncome += rawIncome;
         totalRawMoney += rawMoney;
 
-        // 1. Table Selling Accounts (Kolom Disesuaikan & Ikon Dihapus)
+        // 1. Table Selling Accounts (Grid 11 Kolom Presisi)
         const tr = document.createElement('div');
         tr.className = 'tr account';
         tr.innerHTML = `
@@ -622,11 +646,18 @@ function renderUI(bots) {
                 <div class="meta">${botName}</div>
             </div>
             <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
+            <div><b>$${moneyDisplay}</b></div>
             <div><b>${incomeDisplay}</b>/s</div>
             <div>⚡ ${speedDisplay} m/b</div>
             <div>🏃 Lvl ${treadmillLvl}</div>
             <div>🏠 Lvl ${petPenLvl}</div>
-            <div><span class="status ${isOnline ? 'ready' : 'sold'}">${status}</span></div>
+            <div>🐾 ${petsList.length} Pets</div>
+            <div>🥚 ${eggsList.length} Egg</div>
+            <div>
+                <button class="status-toggle ${saleStatus === 'READY' ? 'ready' : 'sold'}" onclick="toggleSaleStatus('${username}')">
+                    ${saleStatus === 'READY' ? '● READY' : '✖ SOLD'}
+                </button>
+            </div>
             <div class="private-price ${$('hidePrice').checked?'blur':''}">
                 Rp ${(rawIncome * 10).toLocaleString('id-ID')}
                 <button class="del" onclick="deleteAccount('${username}')">🗑 HAPUS</button>
@@ -638,7 +669,7 @@ function renderUI(bots) {
         const mPanel = document.createElement('div');
         mPanel.className = 'panel';
         mPanel.innerHTML = `
-            <b class="${isOnline ? 'online' : 'offline'}">● ${status}</b>
+            <b class="${isOnline ? 'online' : 'offline'}">● ${isOnline ? 'ONLINE' : 'OFFLINE'}</b>
             <h2>${botName}</h2>
             <div class="row"><span>Username</span><b class="user ${$('hideUser').checked?'blur':''}">${username}</b></div>
             <div class="row"><span>Game</span><b>${gameName}</b></div>
@@ -650,28 +681,19 @@ function renderUI(bots) {
         const pPanel = document.createElement('div');
         pPanel.className = 'panel';
         
-        let petsHTML = petsList.map(p => {
-            let mut = p.mutation ? p.mutation.toLowerCase() : 'none';
-            let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
-            return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg)</span>`;
-        }).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
-
-        let eggsHTML = eggsList.map(e => {
-            let mut = e.mutation ? e.mutation.toLowerCase() : 'none';
-            let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
-            return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'}</span>`;
-        }).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
+        let petsHTML = petsList.map(p => `<span class="item-tag">🐾 ${p.name || p.pet_name || 'Pet'}</span>`).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
+        let eggsHTML = eggsList.map(e => `<span class="item-tag">🥚 ${e.pet_name || 'Egg'}</span>`).join('') || '<span style="color:var(--text-muted)">Kosong</span>';
 
         pPanel.innerHTML = `
-            <b class="${isOnline ? 'online' : 'offline'}">● ${status} · ${botName}</b>
+            <b class="${isOnline ? 'online' : 'offline'}">● ${isOnline ? 'ONLINE' : 'OFFLINE'} · ${botName}</b>
             <h2 class="user ${$('hideUser').checked?'blur':''}">${username}</h2>
             <div class="game-map">
                 <div class="gm-label">🎮 CURRENT GAME</div>
                 <div class="gm-game">${gameName}</div>
-                <div class="gm-map">🗺️ Map: ${mapName} <span class="playing">· MONITORING</span></div>
+                <div class="gm-map">MAP: ${mapName} <span class="playing">· MONITORING</span></div>
             </div>
             <div class="spec-box">
-                <div class="row"><span>💰 Money Balance</span><b>${moneyDisplay}</b></div>
+                <div class="row"><span>💰 Money Balance</span><b>$${moneyDisplay}</b></div>
                 <div class="row"><span>⚡ Speed</span><b>${speedDisplay} m/b</b></div>
                 <div class="row"><span>📈 Income / Sec</span><b>${incomeDisplay} /s</b></div>
                 <div class="row"><span>🏃 Treadmill Level</span><b>Lvl ${treadmillLvl}</b></div>
@@ -688,7 +710,7 @@ function renderUI(bots) {
         `;
         playersGrid.appendChild(pPanel);
 
-        // 4. Rate Calc (Ditambahkan Centang Pilih Akun)
+        // 4. Rate Calc
         const savedState = calcState[username] || { accChecked: true, speedChecked: true, incomeChecked: true, rate: 10 };
         const calcRow = document.createElement('div');
         calcRow.className = 'calc-account-group';
@@ -698,9 +720,7 @@ function renderUI(bots) {
         
         calcRow.innerHTML = `
             <div class="calcrow">
-                <div>
-                    <input class="check-account" type="checkbox" ${savedState.accChecked ? 'checked' : ''} onchange="calculateCustomTotal()" title="Hitung Akun Ini">
-                </div>
+                <div><input class="check-account" type="checkbox" ${savedState.accChecked ? 'checked' : ''} onchange="calculateCustomTotal()"></div>
                 <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:var(--text-muted)">(${gameName})</small></div>
                 <div><input class="rate" type="number" value="${savedState.rate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
                 <div style="text-align:right;font-weight:bold;color:var(--gold-primary)">Rate Config</div>
@@ -721,13 +741,13 @@ function renderUI(bots) {
         aiPasswords.innerHTML += `<div class="accountpick"><span class="user ${$('hideUser').checked?'blur':''}">${username}</span><input class="pass" type="password" placeholder="Password"></div>`;
     });
 
-    // Update Overall Status Cards
-    $('dash-ready').textContent = onlineCount;
+    // Update Cards
+    $('dash-ready').textContent = readySaleCount;
     $('dash-online').textContent = onlineCount;
     $('dash-players').textContent = bots.length;
     $('dash-items').textContent = totalItems;
 
-    $('sell-ready').textContent = onlineCount;
+    $('sell-ready').textContent = readySaleCount;
     $('sell-items').textContent = totalItems;
     $('sell-value').textContent = 'Rp ' + (totalRawIncome * 10).toLocaleString('id-ID');
     $('sell-active').textContent = onlineCount;
@@ -743,7 +763,6 @@ function deleteAccount(username) {
     renderUI(stored);
 }
 
-// Synchronize every 3 seconds
 setInterval(syncDashboardData, 3000);
 syncDashboardData();
 </script>
