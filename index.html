@@ -10,7 +10,9 @@
 .logo{font-weight:900;color:#62e7ff;margin-right:12px;font-size:18px}.top button{background:#0b151e;color:#9ce8f7;border:1px solid #203746;border-radius:8px;padding:9px 12px;font-weight:800;cursor:pointer}.top button.active{background:#10303c;border-color:#2a8da5}.top .shot{margin-left:auto;color:#ffd75a;border-color:#705a20}
 main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{display:block}.eyebrow{font-size:10px;color:#5e91a2;font-weight:900;letter-spacing:1.5px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}h1{margin:5px 0;font-size:30px}h2{font-size:16px;margin:0 0 12px}.muted{color:#6e7e8f;font-size:11px}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#0b1118;border:1px solid #192734;border-radius:13px;padding:15px}.label{font-size:10px;color:#708093;font-weight:900}.value{font-size:24px;font-weight:900;margin-top:8px}.green{color:#21e6a4}.cyan{color:#61e9ff}.yellow{color:#ffd34d}.purple{color:#c397ff}
-.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}.check{display:flex;align-items:center;gap:6px;color:#9aa8b7;font-size:11px}.table{overflow:auto;background:#080d13;border:1px solid #192734;border-radius:13px}.thead,.tr{display:grid;grid-template-columns:1.5fr .9fr .9fr .65fr .55fr .6fr .7fr 1fr .7fr;min-width:1100px;align-items:center}.thead{padding:11px 14px;color:#627184;font-size:9px;font-weight:900;border-bottom:1px solid #192734}.tr{padding:13px 14px;border-bottom:1px solid #121d26}.name{font-weight:900}.meta{font-size:9px;color:#617284;margin-top:4px}.blur{filter:blur(7px);user-select:none}.status{font-size:9px;font-weight:900;padding:5px 7px;border-radius:6px}.ready{color:#1ee6a4;background:#071d18}.sold{color:#ffd34d;background:#211a08}.del{background:#2a0d15;border:1px solid #6d2639;color:#ff718d;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}
+.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}.check{display:flex;align-items:center;gap:6px;color:#9aa8b7;font-size:11px}.table{overflow:auto;background:#080d13;border:1px solid #192734;border-radius:13px}
+.thead,.tr{display:grid;grid-template-columns:1.3fr .8fr 1.1fr .6fr 1.8fr .6fr .5fr .6fr .7fr;min-width:1200px;align-items:center}
+.thead{padding:11px 14px;color:#627184;font-size:9px;font-weight:900;border-bottom:1px solid #192734}.tr{padding:13px 14px;border-bottom:1px solid #121d26}.name{font-weight:900}.meta{font-size:9px;color:#617284;margin-top:4px}.blur{filter:blur(7px);user-select:none}.status{font-size:9px;font-weight:900;padding:5px 7px;border-radius:6px}.ready{color:#1ee6a4;background:#071d18}.sold{color:#ffd34d;background:#211a08}.del{background:#2a0d15;border:1px solid #6d2639;color:#ff718d;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}
 .calc{margin-top:15px}.calcrow{display:grid;grid-template-columns:35px 1.5fr 1fr 120px;gap:8px;align-items:center;border-top:1px solid #17232e;padding:10px 0}.rate{background:#071018;border:1px solid #203746;color:#fff;border-radius:6px;padding:7px;width:100%}.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.totalbox{background:#070c12;border:1px solid #1b3441;border-radius:9px;padding:12px}.totalbox small{color:#68798a}.totalbox b{display:block;color:#c1f2ff;font-size:18px;margin-top:6px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.row{display:flex;justify-content:space-between;border-top:1px solid #17232e;padding:8px 0;color:#748395}.row b{color:#eaf1f6}.online{color:#20e6a4}.offline{color:#ff6480}.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.accountpick{display:grid;grid-template-columns:30px 1fr auto;gap:8px;padding:11px;border-bottom:1px solid #17232e;align-items:center}.pass{background:#071018;border:1px solid #203746;color:white;border-radius:7px;padding:8px}.hide{display:none!important}
 @media(max-width:850px){.cards,.grid3{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:1fr}}@media(max-width:550px){.cards,.grid3{grid-template-columns:1fr}.top{overflow:auto}.logo{display:none}}
@@ -26,7 +28,9 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 .mutation-rainbow{border-color:#ff6bda;color:#ff9be7;background:#2b0c26}
 .mutation-gold{border-color:#ffd700;color:#ffeb7a;background:#2b2405}
 .mutation-silver{border-color:#a0b2c6;color:#e1eefb;background:#141c24}
-.spec-box{margin-top:10px;padding:8px;background:#060a0e;border-radius:8px;border:1px solid #131f2b}
+.spec-box{margin-top:10px;padding:8px 12px;background:#060a0e;border-radius:8px;border:1px solid #131f2b}
+.spec-mini{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#94a6b8}
+.calc-subrow{display:flex;align-items:center;gap:12px;padding:6px 0 6px 40px;border-top:1px dashed #14222f;font-size:12px}
 </style>
 </head>
 <body>
@@ -65,16 +69,19 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 <label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
 </div>
 <div class="table">
-<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY / VALUE</div><div>LEVEL</div><div>GAME</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
+<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>INCOME / SEC</div><div>LEVEL</div><div>SPESIFIKASI DETAIL AKUN</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
 <div id="selling-table-body">
 <!-- Dynamic Accounts Rows -->
 </div>
 </div>
 <div class="panel calc" id="calc">
-<h2>🧮 Manual Rate & Item Selling Calculator</h2>
-<div class="muted">Centang item/spesifikasi yang ingin dijual dan atur rate harga manual per item.</div>
+<h2>🧮 Manual Rate Calculator & Specification Selection</h2>
+<div class="muted">Pilih spesifikasi (Speed / Income/s) dengan centang untuk dihitung serta sesuaikan Rate manualnya.</div>
 <div id="calc-items-list" style="margin-top:10px"></div>
-<div class="totals"><div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED ESTIMATION (MANUAL RATE)</small><b id="calculated">Rp 0</b></div></div>
+<div class="totals">
+<div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">0</b></div>
+<div class="totalbox"><small>CALCULATED ESTIMATION (MANUAL RATE)</small><b id="calculated">Rp 0</b></div>
+</div>
 </div>
 </section>
 
@@ -114,37 +121,56 @@ $('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
 $('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
 $('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
 
-// --- HELPER FORMATTER ANGKA RINGKAS (K, M, B) ---
+// --- HELPER PARSER & FORMATTER NUMERIK DETAIL (AMBIL ANGKA DEPAN SAJA) ---
+function parseGameValue(val) {
+    if (val === undefined || val === null) return 0;
+    if (typeof val === 'number') return val;
+    let str = String(val).trim().toUpperCase();
+    let num = parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+    if (str.endsWith('B')) num *= 1e9;
+    else if (str.endsWith('M')) num *= 1e6;
+    else if (str.endsWith('K')) num *= 1e3;
+    return num;
+}
+
 function formatShortNumber(num) {
-    let n = parseFloat(num);
-    if (isNaN(n)) return num || '0';
+    let n = typeof num === 'number' ? num : parseGameValue(num);
+    if (isNaN(n) || n === 0) return '0';
     if (n >= 1e9) return (n / 1e9).toFixed(2).replace(/\.00$/, '') + 'B';
     if (n >= 1e6) return (n / 1e6).toFixed(2).replace(/\.00$/, '') + 'M';
     if (n >= 1e3) return (n / 1e3).toFixed(2).replace(/\.00$/, '') + 'K';
     return n.toString();
 }
 
-// Memory Penyimpan State Rates Manual dan Toggle Checkbox Item
-const manualRates = {};
-const itemCheckState = {};
+// Memory State untuk Toggle dan Manual Rate
+const calcState = {};
 
 function calculateCustomTotal() {
     let calcSum = 0;
-    const calcRows = document.querySelectorAll('.calc-row-item');
-    calcRows.forEach(row => {
-        const checkbox = row.querySelector('.calc-check');
-        const rateInput = row.querySelector('.rate');
-        const itemKey = row.dataset.key;
-        const baseVal = parseFloat(row.dataset.val) || 0;
+    const calcRows = document.querySelectorAll('.calc-account-group');
+    
+    calcRows.forEach(group => {
+        const username = group.dataset.user;
+        const speedCheck = group.querySelector('.check-speed');
+        const incomeCheck = group.querySelector('.check-income');
+        const rateInput = group.querySelector('.rate');
+        
+        const speedVal = parseFloat(group.dataset.speed) || 0;
+        const incomeVal = parseFloat(group.dataset.income) || 0;
+        const rate = parseFloat(rateInput.value) || 0;
 
-        if (checkbox) itemCheckState[itemKey] = checkbox.checked;
-        if (rateInput) manualRates[itemKey] = parseFloat(rateInput.value) || 0;
+        if (!calcState[username]) calcState[username] = {};
+        calcState[username].speedChecked = speedCheck ? speedCheck.checked : true;
+        calcState[username].incomeChecked = incomeCheck ? incomeCheck.checked : true;
+        calcState[username].rate = rate;
 
-        if (checkbox && checkbox.checked) {
-            const currentRate = parseFloat(rateInput.value) || 0;
-            calcSum += baseVal * currentRate;
-        }
+        let accSubtotal = 0;
+        if (speedCheck && speedCheck.checked) accSubtotal += speedVal;
+        if (incomeCheck && incomeCheck.checked) accSubtotal += incomeVal;
+
+        calcSum += (accSubtotal * rate);
     });
+
     $('calculated').textContent = 'Rp ' + Math.round(calcSum).toLocaleString('id-ID');
 }
 
@@ -157,7 +183,8 @@ async function syncDashboardData() {
         const bots = await response.json();
         
         let totalItems = 0;
-        let totalValue = 0;
+        let totalRawIncome = 0;
+        let totalRawMoney = 0;
         let onlineCount = bots.length;
 
         const sellingTable = $('selling-table-body');
@@ -183,23 +210,28 @@ async function syncDashboardData() {
             const botName = bot.bot_name || ('PC Bot - ' + username);
             const status = bot.status || 'ONLINE';
             const level = bot.level || bot.lvl || 1;
-            const rawMoney = bot.total_value || bot.money || 0;
-            const moneyDisplay = formatShortNumber(rawMoney);
             const gameName = bot.game_name || 'Roblox Game';
             const mapName = bot.map_name || 'Main Map';
             const items = Array.isArray(bot.items) ? bot.items : [];
-            const specs = bot.item_specs || {};
+            const specs = bot.item_specs || bot.specs || {};
 
-            // Spesifikasi Auto-Detect Baru (dengan fallback bawaan)
-            const incomePerSec = formatShortNumber(specs.income_sec || specs.income || 0);
-            const speedDisplay = formatShortNumber(specs.speed || 0);
-            const treadmillLvl = specs.treadmill_level || specs.treadmill || 1;
-            const petPenLvl = specs.pet_pen || specs.pen_level || 1;
+            // Auto-Detect Variabel Spesifikasi & Ekstraksi Nilai Angka Depan
+            const rawMoney = parseGameValue(specs.money_balance || specs.money || bot.total_value || bot.money || 0);
+            const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income || 0);
+            const rawSpeed = parseGameValue(specs.speed || 0);
+            const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || 1);
+            const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || 1);
+
+            const moneyDisplay = formatShortNumber(rawMoney);
+            const incomeDisplay = formatShortNumber(rawIncome);
+            const speedDisplay = formatShortNumber(rawSpeed);
+
             const petsList = Array.isArray(specs.pets) ? specs.pets : [];
             const eggsList = Array.isArray(specs.eggs) ? specs.eggs : [];
 
             totalItems += items.length + petsList.length + eggsList.length;
-            totalValue += rawMoney;
+            totalRawIncome += rawIncome;
+            totalRawMoney += rawMoney;
 
             // 1. Render Table Selling Accounts
             const tr = document.createElement('div');
@@ -207,13 +239,17 @@ async function syncDashboardData() {
             tr.innerHTML = `
                 <div><div class="name user ${$('hideUser').checked?'blur':''}">${username}</div><div class="meta">${botName}</div></div>
                 <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
-                <div>💰 ${moneyDisplay}</div>
+                <div>📈 ${incomeDisplay}/s</div>
                 <div>⚡ Lvl ${level}</div>
-                <div>🎮 ${gameName}</div>
+                <div class="spec-mini">
+                    <span>💰 Money: <b>${moneyDisplay}</b></span>
+                    <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
+                    <span>🏃 Treadmill: <b>Lvl ${treadmillLvl}</b> | 🏠 Pen: <b>Lvl ${petPenLvl}</b></span>
+                </div>
                 <div>🎒 ${items.length + petsList.length} Items</div>
                 <div>10/10</div>
                 <div><span class="status ready">READY</span></div>
-                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(rawMoney * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
+                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(rawIncome * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
             `;
             sellingTable.appendChild(tr);
 
@@ -229,18 +265,20 @@ async function syncDashboardData() {
             `;
             monitoringGrid.appendChild(mPanel);
 
-            // 3. Render Players & Detail Spesifikasi (dengan Ikon)
+            // 3. Render Players & Detail Spesifikasi
             const pPanel = document.createElement('div');
             pPanel.className = 'panel';
             
             let petsHTML = petsList.map(p => {
-                let mutClass = p.mutation ? `mutation-${p.mutation.toLowerCase()}` : '';
-                return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg) [${p.mutation || 'Normal'}]</span>`;
+                let mut = p.mutation ? p.mutation.toLowerCase() : 'none';
+                let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
+                return `<span class="item-tag ${mutClass}">🐾 ${p.name || 'Pet'} (${p.weight || '0'}kg) [${p.mutation || 'None'}]</span>`;
             }).join('') || '<span style="color:#5e91a2">Kosong</span>';
 
             let eggsHTML = eggsList.map(e => {
-                let mutClass = e.mutation ? `mutation-${e.mutation.toLowerCase()}` : '';
-                return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'} (${e.weight || '0'}kg) [${e.mutation || 'Normal'}]</span>`;
+                let mut = e.mutation ? e.mutation.toLowerCase() : 'none';
+                let mutClass = mut !== 'none' ? `mutation-${mut}` : '';
+                return `<span class="item-tag ${mutClass}">🥚 ${e.pet_name || 'Egg Pet'} (${e.weight || '0'}kg) [${e.mutation || 'None'}]</span>`;
             }).join('') || '<span style="color:#5e91a2">Kosong</span>';
 
             let itemsHTML = items.map(it => `<span class="item-tag">🎒 ${it}</span>`).join('');
@@ -255,7 +293,7 @@ async function syncDashboardData() {
                 <div class="spec-box">
                     <div class="row"><span>💰 Money Balance</span><b>${moneyDisplay}</b></div>
                     <div class="row"><span>⚡ Speed</span><b>${speedDisplay} m/b</b></div>
-                    <div class="row"><span>📈 Income / Sec</span><b>${incomePerSec} /s</b></div>
+                    <div class="row"><span>📈 Income / Sec</span><b>${incomeDisplay} /s</b></div>
                     <div class="row"><span>🏃 Treadmill Level</span><b>Lvl ${treadmillLvl}</b></div>
                     <div class="row"><span>🏠 Pet Pen Level</span><b>Lvl ${petPenLvl}</b></div>
                 </div>
@@ -271,20 +309,29 @@ async function syncDashboardData() {
             `;
             playersGrid.appendChild(pPanel);
 
-            // 4. Render Manual Rate Calculator Rows di Tab Selling
-            const accKey = username;
-            const isChecked = itemCheckState[accKey] !== undefined ? itemCheckState[accKey] : true;
-            const userRate = manualRates[accKey] !== undefined ? manualRates[accKey] : 10;
-
+            // 4. Render Row Kalkulator Manual Rate dengan Checkbox Speed dan Income/sec
+            const savedState = calcState[username] || { speedChecked: true, incomeChecked: true, rate: 10 };
             const calcRow = document.createElement('div');
-            calcRow.className = 'calcrow calc-row-item';
-            calcRow.dataset.key = accKey;
-            calcRow.dataset.val = rawMoney;
+            calcRow.className = 'calc-account-group';
+            calcRow.dataset.user = username;
+            calcRow.dataset.speed = rawSpeed;
+            calcRow.dataset.income = rawIncome;
+            
             calcRow.innerHTML = `
-                <input class="calc-check" type="checkbox" ${isChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
-                <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:#607789">(${gameName})</small></div>
-                <div><input class="rate" type="number" value="${userRate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
-                <div style="text-align:right;font-weight:bold;color:#61e9ff">Rp ${(rawMoney * userRate).toLocaleString('id-ID')}</div>
+                <div class="calcrow">
+                    <div></div>
+                    <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:#607789">(${gameName})</small></div>
+                    <div><input class="rate" type="number" value="${savedState.rate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
+                    <div style="text-align:right;font-weight:bold;color:#61e9ff">Rate Config</div>
+                </div>
+                <div class="calc-subrow">
+                    <input class="check-speed" type="checkbox" ${savedState.speedChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
+                    <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
+                </div>
+                <div class="calc-subrow">
+                    <input class="check-income" type="checkbox" ${savedState.incomeChecked ? 'checked' : ''} onchange="calculateCustomTotal()">
+                    <span>📈 Income / Sec: <b>${incomeDisplay} /s</b></span>
+                </div>
             `;
             calcList.appendChild(calcRow);
 
@@ -301,10 +348,10 @@ async function syncDashboardData() {
 
         $('sell-ready').textContent = onlineCount;
         $('sell-items').textContent = totalItems;
-        $('sell-value').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
+        $('sell-value').textContent = 'Rp ' + (totalRawIncome * 10).toLocaleString('id-ID');
         $('sell-active').textContent = onlineCount;
 
-        $('total').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
+        $('total').textContent = formatShortNumber(totalRawIncome) + ' Income/s (' + formatShortNumber(totalRawMoney) + ' Money)';
         calculateCustomTotal();
 
     } catch (error) {
