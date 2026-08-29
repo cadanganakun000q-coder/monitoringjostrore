@@ -35,49 +35,47 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 <button class="shot" id="shot">📸 Screenshot Mode</button>
 </nav>
 <main>
-<section class="page active" id="dashboard"><div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Preview interface.</div></div></div>
-<div class="cards"><div class="card"><div class="label">READY</div><div class="value green">0</div></div><div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan">0</div></div><div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple">0</div></div><div class="card"><div class="label">ITEMS</div><div class="value yellow">0</div></div></div></section>
+<section class="page active" id="dashboard"><div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Live Monitoring & Auto Detect System.</div></div></div>
+<div class="cards"><div class="card"><div class="label">READY</div><div class="value green" id="dash-ready">0</div></div><div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan" id="dash-online">0</div></div><div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple" id="dash-total">0</div></div><div class="card"><div class="label">ITEMS</div><div class="value yellow" id="dash-items">0</div></div></div></section>
 
-<section class="page" id="selling"><div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi dari monitoring. Tidak ada Add Account.</div></div><button data-page="ai">✨ AI INPUT</button></div>
-<div class="cards"><div class="card"><div class="label">READY FOR SALE</div><div class="value green">0</div></div><div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan">0</div></div><div class="card"><div class="label">SELLING VALUE</div><div class="value cyan private-price">Rp 0</div></div><div class="card"><div class="label">SOLD</div><div class="value yellow">0</div></div></div>
+<section class="page" id="selling"><div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi otomatis dari Roblox script.</div></div><button data-page="ai">✨ AI INPUT</button></div>
+<div class="cards"><div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="sell-ready">0</div></div><div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan" id="sell-items">0</div></div><div class="card"><div class="label">SELLING VALUE</div><div class="value cyan private-price" id="sell-value">Rp 0</div></div><div class="card"><div class="label">SOLD</div><div class="value yellow">0</div></div></div>
 <div class="controls">
-<label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
+<label class="check"><input id="hideUser" type="checkbox"> Hide username</label>
 <label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
-<label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
-<label class="check"><input id="hideCalc" type="checkbox" checked> Hide calculator</label>
+<label class="check"><input id="hidePrice" type="checkbox"> Hide selling price</label>
+<label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
 </div>
-<div class="table"><div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
-<div class="tr account"><div><div class="name user">Player_ABC</div><div class="meta">Android Bot 01</div></div><div class="password">••••••••</div><div>0</div><div>0/s</div><div>0</div><div>0</div><div>0/0</div><div><span class="status ready">READY</span></div><div class="private-price">Rp 0 <button class="del">🗑 HAPUS</button></div></div>
-<div class="tr account"><div><div class="name user">Player_XYZ</div><div class="meta">Samsung Bot 02</div></div><div class="password">••••••••</div><div>0</div><div>0/s</div><div>0</div><div>0</div><div>0/0</div><div><span class="status ready">READY</span></div><div class="private-price">Rp 0 <button class="del">🗑 HAPUS</button></div></div>
-<div class="tr account"><div><div class="name user">Player_RTY</div><div class="meta">Android Bot 04</div></div><div class="password">••••••••</div><div>0</div><div>0/s</div><div>0</div><div>0</div><div>0/0</div><div><span class="status sold">SOLD</span></div><div class="private-price">Rp 0 <button class="del">🗑 HAPUS</button></div></div></div>
-<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Pilih komponen yang dihitung. Selling rate manual sudah dihilangkan.</div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="0" checked><b>Income</b><span>0/s</span><input class="rate" value="0"></div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="0" checked><b>Speed</b><span>0</span><input class="rate" value="0"></div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="0"><b>Items</b><span>0</span><input class="rate" value="0"></div>
+<div class="table" id="selling-table">
+<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
+<!-- DATA AKUN AKAN TAMPIL OTOMATIS DI SINI -->
+</div>
+<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Pilih komponen yang dihitung.</div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="1000" checked><b>Income</b><span>0/s</span><input class="rate" value="1000"></div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="25000" checked><b>Speed</b><span>0</span><input class="rate" value="25000"></div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="5000"><b>Items</b><span>0</span><input class="rate" value="5000"></div>
 <div class="totals"><div class="totalbox"><small>TOTAL</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED PRICE</small><b id="calculated">Rp 0</b></div></div></div></section>
 
-<section class="page" id="monitoring"><div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device Monitoring</h1></div></div><div class="grid3">
-<div class="panel"><b class="online">● ONLINE</b><h2>Android Bot 01</h2><div class="row"><span>Username</span><b>Player_ABC</b></div><div class="row"><span>RAM</span><b>0 GB</b></div><div class="row"><span>RAM Usage</span><b>0 / 0 GB · 0%</b></div><div class="row"><span>Storage</span><b>0 GB</b></div><div class="row"><span>Storage Usage</span><b>0 / 0 GB · 0%</b></div><div class="row"><span>Battery</span><b>0%</b></div><div class="row"><span>Last Seen</span><b>00:00:00</b></div></div>
-<div class="panel"><b class="online">● ONLINE</b><h2>Samsung Bot 02</h2><div class="row"><span>Username</span><b>Player_XYZ</b></div><div class="row"><span>RAM</span><b>0 GB</b></div><div class="row"><span>RAM Usage</span><b>0 / 0 GB · 0%</b></div><div class="row"><span>Storage</span><b>0 GB</b></div><div class="row"><span>Storage Usage</span><b>0 / 0 GB · 0%</b></div><div class="row"><span>Battery</span><b>0%</b></div><div class="row"><span>Last Seen</span><b>00:00:00</b></div></div>
-<div class="panel"><b class="offline">● OFFLINE</b><h2>Poco Bot 03</h2><div class="row"><span>Username</span><b>Player_QWE</b></div><div class="row"><span>RAM</span><b>0 GB</b></div><div class="row"><span>RAM Usage</span><b>—</b></div><div class="row"><span>Storage</span><b>0 GB</b></div><div class="row"><span>Storage Usage</span><b>0 / 0 GB · 0%</b></div><div class="row"><span>Battery</span><b>0%</b></div><div class="row"><span>Last Seen</span><b>00:00:00</b></div></div></div></section>
-
-<section class="page" id="players"><div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts</h1><div class="muted">Game dan map Roblox yang sedang dimainkan akan mengikuti data dari device monitoring.</div></div></div><div class="grid3">
-<div class="panel"><b class="online">● ONLINE · Android Bot 01</b><h2>Player_ABC</h2>
-<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">—</div><div class="gm-map">🗺️ Map / Place: — <span class="playing">· SEDANG BERMAIN</span></div></div>
-<div class="row"><span>Item 1</span><b>0/s</b></div><div class="row"><span>Item 2</span><b>0/s</b></div><div class="row"><span>Item 3</span><b>0/s</b></div><div class="row"><span>Base</span><b>0/0</b></div><div class="row"><span>Storage</span><b>0/0</b></div></div>
-<div class="panel"><b class="online">● ONLINE · Samsung Bot 02</b><h2>Player_XYZ</h2>
-<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">—</div><div class="gm-map">🗺️ Map / Place: — <span class="playing">· SEDANG BERMAIN</span></div></div>
-<div class="row"><span>Item 1</span><b>—</b></div><div class="row"><span>Item 2</span><b>—</b></div><div class="row"><span>Base</span><b>0/0</b></div></div>
-<div class="panel"><b class="offline">● OFFLINE · Poco Bot 03</b><h2>Player_QWE</h2>
-<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">—</div><div class="gm-map">🗺️ Map / Place: —</div></div>
-<div class="row"><span>Last Game</span><b>Unavailable</b></div><div class="row"><span>Last Seen</span><b>00:00:00</b></div></div>
+<section class="page" id="monitoring"><div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device Monitoring</h1></div></div>
+<div class="grid3" id="monitoring-grid">
+<!-- DEVICE MONITORING TAMPIL OTOMATIS DI SINI -->
 </div></section>
 
-<section class="page" id="ai"><div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun yang sudah terdeteksi lalu isi password. AI tidak membuat akun baru.</div></div></div><div class="panel ai-grid"><div><h2>Account Terdeteksi</h2><div class="accountpick"><input type="checkbox" checked><b>Player_ABC</b><span>Android Bot 01</span></div><div class="accountpick"><input type="checkbox"><b>Player_XYZ</b><span>Samsung Bot 02</span></div><div class="accountpick"><input type="checkbox"><b>Player_QWE</b><span>Poco Bot 03</span></div><div class="accountpick"><input type="checkbox"><b>Player_RTY</b><span>Android Bot 04</span></div></div><div><h2>Password</h2><div class="accountpick"><span>Player_ABC</span><input class="pass" type="password" placeholder="Password"></div><div class="accountpick"><span>Player_XYZ</span><input class="pass" type="password" placeholder="Password"></div><button>💾 Simpan Password Terpilih</button></div></div></section>
+<section class="page" id="players"><div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts</h1><div class="muted">Game dan map Roblox yang sedang dimainkan.</div></div></div>
+<div class="grid3" id="players-grid">
+<!-- PLAYER DETAILS TAMPIL OTOMATIS DI SINI -->
+</div></section>
+
+<section class="page" id="ai"><div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun terdeteksi lalu isi password.</div></div></div>
+<div class="panel ai-grid">
+<div id="ai-detected-list"><h2>Account Terdeteksi</h2></div>
+<div id="ai-password-list"><h2>Password</h2><button style="margin-top:15px;">💾 Simpan Password Terpilih</button></div>
+</div></section>
 </main>
+
 <script>
 const pages=[...document.querySelectorAll('.page')], buttons=[...document.querySelectorAll('[data-page]')];
-function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===id))}
+function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.dataset.page&&b.classList.toggle('active',b.dataset.page===id))}
 buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
 const $=id=>document.getElementById(id);
 function blurSet(selector,on){document.querySelectorAll(selector).forEach(x=>x.classList.toggle('blur',on))}
@@ -86,25 +84,89 @@ $('hidePass').onchange=e=>blurSet('.password',e.target.checked);
 $('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
 $('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
 $('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
-document.querySelectorAll('.del').forEach(b=>b.onclick=()=>{if(confirm('Hapus akun ini dari Selling Accounts?'))b.closest('.account').remove()});
+
 function calc(){let total=0;document.querySelectorAll('.itemcheck').forEach((c,i)=>{if(c.checked)total+=(+c.dataset.v||0)*(+(document.querySelectorAll('.rate')[i].value)||0)});$('total').textContent='Rp '+Math.round(total).toLocaleString('id-ID');$('calculated').textContent='Rp '+Math.round(total).toLocaleString('id-ID')}
 document.querySelectorAll('.itemcheck,.rate').forEach(x=>x.addEventListener('input',calc));calc();
 
-// --- FITUR AUTO-DETECT VERCEL BACKEND ---
+// --- SYSTEM AUTO DETECT BACKEND VERCEL ---
 const API_URL = "https://jostore-backend.vercel.app/api/data";
 
 async function fetchBotData() {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        console.log("Data Bot Ter-update dari Vercel:", data);
+        
+        if (!data || !Array.isArray(data)) return;
+
+        // 1. Update Counter Dashboard
+        const onlineBots = data.filter(d => d.status === 'ONLINE');
+        $('dash-ready').textContent = onlineBots.length;
+        $('dash-online').textContent = onlineBots.length;
+        $('dash-total').textContent = data.length;
+        $('sell-ready').textContent = onlineBots.length;
+
+        // 2. Render Tabel Selling Accounts
+        const table = $('selling-table');
+        let rowsHtml = '<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>';
+        
+        data.forEach((bot, index) => {
+            rowsHtml += `
+            <div class="tr account">
+                <div><div class="name user">${bot.username || 'Bot_' + index}</div><div class="meta">${bot.bot_name || 'Device ' + (index+1)}</div></div>
+                <div class="password">••••••••</div>
+                <div>0</div><div>0/s</div><div>0</div><div>0</div><div>0/0</div>
+                <div><span class="status ready">${bot.status || 'ONLINE'}</span></div>
+                <div class="private-price">Rp 0 <button class="del" onclick="this.closest('.account').remove()">🗑 HAPUS</button></div>
+            </div>`;
+        });
+        table.innerHTML = rowsHtml;
+
+        // 3. Render Live Monitoring
+        const monGrid = $('monitoring-grid');
+        let monHtml = '';
+        data.forEach((bot, index) => {
+            monHtml += `
+            <div class="panel">
+                <b class="online">● ${bot.status || 'ONLINE'}</b>
+                <h2>${bot.bot_name || 'Bot Device ' + (index+1)}</h2>
+                <div class="row"><span>Username</span><b>${bot.username || '-'}</b></div>
+                <div class="row"><span>RAM</span><b>—</b></div>
+                <div class="row"><span>Status</span><b>Connected</b></div>
+            </div>`;
+        });
+        monGrid.innerHTML = monHtml;
+
+        // 4. Render Player Accounts
+        const playGrid = $('players-grid');
+        let playHtml = '';
+        data.forEach((bot) => {
+            playHtml += `
+            <div class="panel">
+                <b class="online">● ONLINE · ${bot.username}</b>
+                <h2>${bot.username}</h2>
+                <div class="game-map">
+                    <div class="gm-label">🎮 CURRENT GAME</div>
+                    <div class="gm-game">Roblox Game</div>
+                    <div class="gm-map">🗺️ Map: Active <span class="playing">· SEDANG BERMAIN</span></div>
+                </div>
+                <div class="row"><span>Status</span><b>Active Client</b></div>
+            </div>`;
+        });
+        playGrid.innerHTML = playHtml;
+
+        // Re-apply filter blur
+        blurSet('.user', $('hideUser').checked);
+        blurSet('.password', $('hidePass').checked);
+        blurSet('.private-price', $('hidePrice').checked);
+
     } catch (error) {
-        console.error("Gagal mengambil data dari Vercel:", error);
+        console.error("Gagal sinkronisasi data:", error);
     }
 }
 
-// Cek otomatis setiap 5 detik
-setInterval(fetchBotData, 5000);
+// Auto detect setiap 3 detik
+setInterval(fetchBotData, 3000);
 fetchBotData();
 </script>
-</body></html>
+</body>
+</html>
