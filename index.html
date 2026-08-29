@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JOSTORE Preview</title>
+<title>JOSTORE Preview & Monitoring</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#070b10;color:#e8eef5;font:14px Arial,sans-serif}
 .top{position:sticky;top:0;z-index:20;height:58px;background:#080d13;border-bottom:1px solid #1b2835;display:flex;align-items:center;gap:8px;padding:8px 14px}
@@ -22,6 +22,7 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 .game-map .gm-game{font-weight:900;color:#c8f5ff;margin-top:4px}
 .game-map .gm-map{font-size:11px;color:#8fa4b5;margin-top:3px}
 .playing{color:#21e6a4;font-size:9px;font-weight:900}
+.item-tag{display:inline-block;background:#0f222e;border:1px solid #244356;border-radius:4px;padding:2px 6px;margin:2px;font-size:10px;color:#9fe3f3}
 </style>
 </head>
 <body>
@@ -35,47 +36,67 @@ main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{d
 <button class="shot" id="shot">📸 Screenshot Mode</button>
 </nav>
 <main>
-<section class="page active" id="dashboard"><div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Live Monitoring & Auto Detect System.</div></div></div>
-<div class="cards"><div class="card"><div class="label">READY</div><div class="value green" id="dash-ready">0</div></div><div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan" id="dash-online">0</div></div><div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple" id="dash-total">0</div></div><div class="card"><div class="label">ITEMS</div><div class="value yellow" id="dash-items">0</div></div></div></section>
+<section class="page active" id="dashboard">
+<div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Live Auto-Detect Status Dashboard.</div></div></div>
+<div class="cards">
+<div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="dash-ready">0</div></div>
+<div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan" id="dash-online">0</div></div>
+<div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple" id="dash-players">0</div></div>
+<div class="card"><div class="label">TOTAL ITEMS DETECTED</div><div class="value yellow" id="dash-items">0</div></div>
+</div>
+</section>
 
-<section class="page" id="selling"><div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi otomatis dari Roblox script.</div></div><button data-page="ai">✨ AI INPUT</button></div>
-<div class="cards"><div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="sell-ready">0</div></div><div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan" id="sell-items">0</div></div><div class="card"><div class="label">SELLING VALUE</div><div class="value cyan private-price" id="sell-value">Rp 0</div></div><div class="card"><div class="label">SOLD</div><div class="value yellow">0</div></div></div>
+<section class="page" id="selling">
+<div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi otomatis dari Roblox via Vercel API.</div></div><button data-page="ai">✨ AI INPUT</button></div>
+<div class="cards">
+<div class="card"><div class="label">READY FOR SALE</div><div class="value green" id="sell-ready">0</div></div>
+<div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan" id="sell-items">0</div></div>
+<div class="card"><div class="label">TOTAL SELLING VALUE</div><div class="value cyan private-price" id="sell-value">Rp 0</div></div>
+<div class="card"><div class="label">ACTIVE BOTS</div><div class="value yellow" id="sell-active">0</div></div>
+</div>
 <div class="controls">
-<label class="check"><input id="hideUser" type="checkbox"> Hide username</label>
+<label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
 <label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
-<label class="check"><input id="hidePrice" type="checkbox"> Hide selling price</label>
-<label class="check"><input id="hideCalc" type="checkbox"> Hide calculator</label>
+<label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
+<label class="check"><input id="hideCalc" type="checkbox" checked> Hide calculator</label>
 </div>
-<div class="table" id="selling-table">
-<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
-<!-- DATA AKUN AKAN TAMPIL OTOMATIS DI SINI -->
+<div class="table">
+<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY / VALUE</div><div>LEVEL</div><div>GAME</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
+<div id="selling-table-body">
+<!-- Dynamic Accounts Rows Will Be Rendered Here -->
 </div>
-<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Pilih komponen yang dihitung.</div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="1000" checked><b>Income</b><span>0/s</span><input class="rate" value="1000"></div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="25000" checked><b>Speed</b><span>0</span><input class="rate" value="25000"></div>
-<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="0" data-r="5000"><b>Items</b><span>0</span><input class="rate" value="5000"></div>
-<div class="totals"><div class="totalbox"><small>TOTAL</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED PRICE</small><b id="calculated">Rp 0</b></div></div></div></section>
+</div>
+<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Estimasi total harga penjualan akun aktif.</div>
+<div class="totals"><div class="totalbox"><small>TOTAL VALUE DETECTED</small><b id="total">Rp 0</b></div><div class="totalbox"><small>CALCULATED ESTIMATION</small><b id="calculated">Rp 0</b></div></div></div>
+</section>
 
-<section class="page" id="monitoring"><div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device Monitoring</h1></div></div>
+<section class="page" id="monitoring">
+<div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device & Bot Monitoring</h1></div></div>
 <div class="grid3" id="monitoring-grid">
-<!-- DEVICE MONITORING TAMPIL OTOMATIS DI SINI -->
-</div></section>
+<!-- Dynamic Device Panels -->
+</div>
+</section>
 
-<section class="page" id="players"><div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts</h1><div class="muted">Game dan map Roblox yang sedang dimainkan.</div></div></div>
+<section class="page" id="players">
+<div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts & Inventory Specs</h1><div class="muted">Data inventaris, level, game, item & spesifikasi detail akun Roblox.</div></div></div>
 <div class="grid3" id="players-grid">
-<!-- PLAYER DETAILS TAMPIL OTOMATIS DI SINI -->
-</div></section>
+<!-- Dynamic Players Panels -->
+</div>
+</section>
 
-<section class="page" id="ai"><div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun terdeteksi lalu isi password.</div></div></div>
+<section class="page" id="ai">
+<div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun yang terdeteksi lalu isi password.</div></div></div>
 <div class="panel ai-grid">
-<div id="ai-detected-list"><h2>Account Terdeteksi</h2></div>
-<div id="ai-password-list"><h2>Password</h2><button style="margin-top:15px;">💾 Simpan Password Terpilih</button></div>
-</div></section>
+<div><h2>Account Terdeteksi</h2><div id="ai-account-list"></div></div>
+<div><h2>Password Setup</h2><div id="ai-password-list"></div><button style="margin-top:10px;width:100%;padding:10px;background:#10303c;border:1px solid #2a8da5;color:#61e9ff;border-radius:8px;font-weight:900;cursor:pointer">💾 Simpan Password Terpilih</button></div>
+</div>
+</section>
 </main>
 
 <script>
+// --- NAVIGATION & UI BLUR SYSTEM ---
 const pages=[...document.querySelectorAll('.page')], buttons=[...document.querySelectorAll('[data-page]')];
-function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.dataset.page&&b.classList.toggle('active',b.dataset.page===id))}
+function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===id))}
 buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
 const $=id=>document.getElementById(id);
 function blurSet(selector,on){document.querySelectorAll(selector).forEach(x=>x.classList.toggle('blur',on))}
@@ -85,88 +106,129 @@ $('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
 $('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
 $('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
 
-function calc(){let total=0;document.querySelectorAll('.itemcheck').forEach((c,i)=>{if(c.checked)total+=(+c.dataset.v||0)*(+(document.querySelectorAll('.rate')[i].value)||0)});$('total').textContent='Rp '+Math.round(total).toLocaleString('id-ID');$('calculated').textContent='Rp '+Math.round(total).toLocaleString('id-ID')}
-document.querySelectorAll('.itemcheck,.rate').forEach(x=>x.addEventListener('input',calc));calc();
-
-// --- SYSTEM AUTO DETECT BACKEND VERCEL ---
+// --- REAL-TIME AUTO DETECT VERCEL BACKEND ENGINE ---
 const API_URL = "https://jostore-backend.vercel.app/api/data";
 
-async function fetchBotData() {
+async function syncDashboardData() {
     try {
         const response = await fetch(API_URL);
-        const data = await response.json();
+        const bots = await response.json();
         
-        if (!data || !Array.isArray(data)) return;
+        let totalItems = 0;
+        let totalValue = 0;
+        let onlineCount = bots.length;
 
-        // 1. Update Counter Dashboard
-        const onlineBots = data.filter(d => d.status === 'ONLINE');
-        $('dash-ready').textContent = onlineBots.length;
-        $('dash-online').textContent = onlineBots.length;
-        $('dash-total').textContent = data.length;
-        $('sell-ready').textContent = onlineBots.length;
+        // Reset Containers
+        const sellingTable = $('selling-table-body');
+        const monitoringGrid = $('monitoring-grid');
+        const playersGrid = $('players-grid');
+        const aiAccounts = $('ai-account-list');
+        const aiPasswords = $('ai-password-list');
 
-        // 2. Render Tabel Selling Accounts
-        const table = $('selling-table');
-        let rowsHtml = '<div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>';
-        
-        data.forEach((bot, index) => {
-            rowsHtml += `
-            <div class="tr account">
-                <div><div class="name user">${bot.username || 'Bot_' + index}</div><div class="meta">${bot.bot_name || 'Device ' + (index+1)}</div></div>
-                <div class="password">••••••••</div>
-                <div>0</div><div>0/s</div><div>0</div><div>0</div><div>0/0</div>
-                <div><span class="status ready">${bot.status || 'ONLINE'}</span></div>
-                <div class="private-price">Rp 0 <button class="del" onclick="this.closest('.account').remove()">🗑 HAPUS</button></div>
-            </div>`;
-        });
-        table.innerHTML = rowsHtml;
+        sellingTable.innerHTML = '';
+        monitoringGrid.innerHTML = '';
+        playersGrid.innerHTML = '';
+        aiAccounts.innerHTML = '';
+        aiPasswords.innerHTML = '';
 
-        // 3. Render Live Monitoring
-        const monGrid = $('monitoring-grid');
-        let monHtml = '';
-        data.forEach((bot, index) => {
-            monHtml += `
-            <div class="panel">
-                <b class="online">● ${bot.status || 'ONLINE'}</b>
-                <h2>${bot.bot_name || 'Bot Device ' + (index+1)}</h2>
-                <div class="row"><span>Username</span><b>${bot.username || '-'}</b></div>
-                <div class="row"><span>RAM</span><b>—</b></div>
-                <div class="row"><span>Status</span><b>Connected</b></div>
-            </div>`;
-        });
-        monGrid.innerHTML = monHtml;
+        if(bots.length === 0) {
+            sellingTable.innerHTML = `<div class="tr"><div style="grid-column:1/-1;text-align:center;color:#6e7e8f">Menunggu Bot Roblox Terhubung...</div></div>`;
+        }
 
-        // 4. Render Player Accounts
-        const playGrid = $('players-grid');
-        let playHtml = '';
-        data.forEach((bot) => {
-            playHtml += `
-            <div class="panel">
-                <b class="online">● ONLINE · ${bot.username}</b>
-                <h2>${bot.username}</h2>
+        bots.forEach(bot => {
+            const username = bot.username || 'Unknown Player';
+            const botName = bot.bot_name || ('PC Bot - ' + username);
+            const status = bot.status || 'ONLINE';
+            const level = bot.level || bot.lvl || 1;
+            const money = bot.total_value || bot.money || 0;
+            const gameName = bot.game_name || 'Roblox Game';
+            const mapName = bot.map_name || 'Main Map';
+            const items = Array.isArray(bot.items) ? bot.items : [];
+            const itemSpecs = bot.item_specs || {};
+
+            totalItems += items.length;
+            totalValue += money;
+
+            // 1. Render Table Selling Accounts
+            const tr = document.createElement('div');
+            tr.className = 'tr account';
+            tr.innerHTML = `
+                <div><div class="name user ${$('hideUser').checked?'blur':''}">${username}</div><div class="meta">${botName}</div></div>
+                <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
+                <div>$${money.toLocaleString('id-ID')}</div>
+                <div>Lvl ${level}</div>
+                <div>${gameName}</div>
+                <div>${items.length} Items</div>
+                <div>10/10</div>
+                <div><span class="status ready">READY</span></div>
+                <div class="private-price ${$('hidePrice').checked?'blur':''}">Rp ${(money * 10).toLocaleString('id-ID')} <button class="del" onclick="this.closest('.tr').remove()">🗑 HAPUS</button></div>
+            `;
+            sellingTable.appendChild(tr);
+
+            // 2. Render Monitoring Panels
+            const mPanel = document.createElement('div');
+            mPanel.className = 'panel';
+            mPanel.innerHTML = `
+                <b class="online">● ONLINE</b><h2>${botName}</h2>
+                <div class="row"><span>Username</span><b class="user ${$('hideUser').checked?'blur':''}">${username}</b></div>
+                <div class="row"><span>Game</span><b>${gameName}</b></div>
+                <div class="row"><span>Status</span><b>${status}</b></div>
+                <div class="row"><span>Last Update</span><b>${new Date(bot.lastSeen || Date.now()).toLocaleTimeString()}</b></div>
+            `;
+            monitoringGrid.appendChild(mPanel);
+
+            // 3. Render Players & Item Specifications
+            const pPanel = document.createElement('div');
+            pPanel.className = 'panel';
+            
+            let itemsHTML = items.map(it => {
+                let specStr = itemSpecs[it] ? ` (${itemSpecs[it]})` : '';
+                return `<span class="item-tag">${it}${specStr}</span>`;
+            }).join('') || '<span style="color:#5e91a2">Kosong</span>';
+
+            pPanel.innerHTML = `
+                <b class="online">● ONLINE · ${botName}</b><h2 class="user ${$('hideUser').checked?'blur':''}">${username}</h2>
                 <div class="game-map">
                     <div class="gm-label">🎮 CURRENT GAME</div>
-                    <div class="gm-game">Roblox Game</div>
-                    <div class="gm-map">🗺️ Map: Active <span class="playing">· SEDANG BERMAIN</span></div>
+                    <div class="gm-game">${gameName}</div>
+                    <div class="gm-map">🗺️ Map / Place: ${mapName} <span class="playing">· SEDANG BERMAIN</span></div>
                 </div>
-                <div class="row"><span>Status</span><b>Active Client</b></div>
-            </div>`;
-        });
-        playGrid.innerHTML = playHtml;
+                <div class="row"><span>Level</span><b>Level ${level}</b></div>
+                <div class="row"><span>Total Money / Value</span><b>$${money.toLocaleString('id-ID')}</b></div>
+                <div style="margin-top:10px">
+                    <div class="gm-label" style="margin-bottom:6px">🎒 DETECTED ITEMS & SPECS (${items.length}):</div>
+                    <div>${itemsHTML}</div>
+                </div>
+            `;
+            playersGrid.appendChild(pPanel);
 
-        // Re-apply filter blur
-        blurSet('.user', $('hideUser').checked);
-        blurSet('.password', $('hidePass').checked);
-        blurSet('.private-price', $('hidePrice').checked);
+            // 4. Render AI Input Account Pickers
+            aiAccounts.innerHTML += `<div class="accountpick"><input type="checkbox" checked><b class="user ${$('hideUser').checked?'blur':''}">${username}</b><span>${botName}</span></div>`;
+            aiPasswords.innerHTML += `<div class="accountpick"><span class="user ${$('hideUser').checked?'blur':''}">${username}</span><input class="pass" type="password" placeholder="Password"></div>`;
+        });
+
+        // Update Overview Cards
+        $('dash-ready').textContent = onlineCount;
+        $('dash-online').textContent = onlineCount;
+        $('dash-players').textContent = onlineCount;
+        $('dash-items').textContent = totalItems;
+
+        $('sell-ready').textContent = onlineCount;
+        $('sell-items').textContent = totalItems;
+        $('sell-value').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
+        $('sell-active').textContent = onlineCount;
+
+        $('total').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
+        $('calculated').textContent = 'Rp ' + (totalValue * 10).toLocaleString('id-ID');
 
     } catch (error) {
-        console.error("Gagal sinkronisasi data:", error);
+        console.error("Auto-Detect Fetch Error:", error);
     }
 }
 
-// Auto detect setiap 3 detik
-setInterval(fetchBotData, 3000);
-fetchBotData();
+// Jalankan auto sync setiap 3 detik
+setInterval(syncDashboardData, 3000);
+syncDashboardData();
 </script>
 </body>
 </html>
