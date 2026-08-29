@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JOSTORE Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#070b10;color:#e8eef5;font:14px Arial,sans-serif}
+.top{position:sticky;top:0;z-index:20;height:58px;background:#080d13;border-bottom:1px solid #1b2835;display:flex;align-items:center;gap:8px;padding:8px 14px}
+.logo{font-weight:900;color:#62e7ff;margin-right:12px;font-size:18px}.top button{background:#0b151e;color:#9ce8f7;border:1px solid #203746;border-radius:8px;padding:9px 12px;font-weight:800;cursor:pointer}.top button.active{background:#10303c;border-color:#2a8da5}.top .shot{margin-left:auto;color:#ffd75a;border-color:#705a20}
+main{max-width:1400px;margin:auto;padding:24px}.page{display:none}.page.active{display:block}.eyebrow{font-size:10px;color:#5e91a2;font-weight:900;letter-spacing:1.5px}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}h1{margin:5px 0;font-size:30px}h2{font-size:16px;margin:0 0 12px}.muted{color:#6e7e8f;font-size:11px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:#0b1118;border:1px solid #192734;border-radius:13px;padding:15px}.label{font-size:10px;color:#708093;font-weight:900}.value{font-size:24px;font-weight:900;margin-top:8px}.green{color:#21e6a4}.cyan{color:#61e9ff}.yellow{color:#ffd34d}.purple{color:#c397ff}
+.controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}.check{display:flex;align-items:center;gap:6px;color:#9aa8b7;font-size:11px}.table{overflow:auto;background:#080d13;border:1px solid #192734;border-radius:13px}.thead,.tr{display:grid;grid-template-columns:1.5fr .9fr .9fr .65fr .55fr .6fr .7fr 1fr .7fr;min-width:1100px;align-items:center}.thead{padding:11px 14px;color:#627184;font-size:9px;font-weight:900;border-bottom:1px solid #192734}.tr{padding:13px 14px;border-bottom:1px solid #121d26}.name{font-weight:900}.meta{font-size:9px;color:#617284;margin-top:4px}.blur{filter:blur(7px);user-select:none}.status{font-size:9px;font-weight:900;padding:5px 7px;border-radius:6px}.ready{color:#1ee6a4;background:#071d18}.sold{color:#ffd34d;background:#211a08}.del{background:#2a0d15;border:1px solid #6d2639;color:#ff718d;border-radius:6px;padding:6px 8px;font-size:9px;font-weight:900;cursor:pointer}
+.calc{margin-top:15px}.calcrow{display:grid;grid-template-columns:35px 1.5fr 1fr 120px;gap:8px;align-items:center;border-top:1px solid #17232e;padding:10px 0}.rate{background:#071018;border:1px solid #203746;color:#fff;border-radius:6px;padding:7px}.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.totalbox{background:#070c12;border:1px solid #1b3441;border-radius:9px;padding:12px}.totalbox small{color:#68798a}.totalbox b{display:block;color:#c1f2ff;font-size:18px;margin-top:6px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.row{display:flex;justify-content:space-between;border-top:1px solid #17232e;padding:8px 0;color:#748395}.row b{color:#eaf1f6}.online{color:#20e6a4}.offline{color:#ff6480}.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.accountpick{display:grid;grid-template-columns:30px 1fr auto;gap:8px;padding:11px;border-bottom:1px solid #17232e;align-items:center}.pass{background:#071018;border:1px solid #203746;color:white;border-radius:7px;padding:8px}.hide{display:none!important}
+@media(max-width:850px){.cards,.grid3{grid-template-columns:1fr 1fr}.ai-grid{grid-template-columns:1fr}}@media(max-width:550px){.cards,.grid3{grid-template-columns:1fr}.top{overflow:auto}.logo{display:none}}
+</style>
+
+<style id="game-map-style">
+.game-map{margin-top:12px;padding:10px 11px;border:1px solid #1b3441;border-radius:9px;background:#081018}
+.game-map .gm-label{font-size:9px;color:#607789;font-weight:900;letter-spacing:.7px}
+.game-map .gm-game{font-weight:900;color:#c8f5ff;margin-top:4px}
+.game-map .gm-map{font-size:11px;color:#8fa4b5;margin-top:3px}
+.playing{color:#21e6a4;font-size:9px;font-weight:900}
+</style>
+</head>
+<body>
+<nav class="top">
+<div class="logo">◆ JOSTORE</div>
+<button class="active" data-page="dashboard">Dashboard</button>
+<button data-page="selling">🛒 Selling</button>
+<button data-page="monitoring">◉ Monitoring</button>
+<button data-page="players">♟ Players</button>
+<button data-page="ai">✨ AI Input</button>
+<button class="shot" id="shot">📸 Screenshot Mode</button>
+</nav>
+<main>
+<section class="page active" id="dashboard"><div class="head"><div><div class="eyebrow">JOSTORE · DASHBOARD</div><h1>Store Overview</h1><div class="muted">Preview interface.</div></div></div>
+<div class="cards"><div class="card"><div class="label">READY</div><div class="value green">3</div></div><div class="card"><div class="label">DEVICES ONLINE</div><div class="value cyan">3</div></div><div class="card"><div class="label">PLAYER ACCOUNTS</div><div class="value purple">4</div></div><div class="card"><div class="label">ITEMS</div><div class="value yellow">63</div></div></div></section>
+
+<section class="page" id="selling"><div class="head"><div><div class="eyebrow">JOSTORE · SELLING ACCOUNTS</div><h1>Selling Accounts</h1><div class="muted">Akun terdeteksi dari monitoring. Tidak ada Add Account.</div></div><button data-page="ai">✨ AI INPUT</button></div>
+<div class="cards"><div class="card"><div class="label">READY FOR SALE</div><div class="value green">3</div></div><div class="card"><div class="label">TOTAL ITEMS</div><div class="value cyan">55</div></div><div class="card"><div class="label">SELLING VALUE</div><div class="value cyan private-price">Rp 11.300.000</div></div><div class="card"><div class="label">SOLD</div><div class="value yellow">1</div></div></div>
+<div class="controls">
+<label class="check"><input id="hideUser" type="checkbox" checked> Hide username</label>
+<label class="check"><input id="hidePass" type="checkbox" checked> Hide password</label>
+<label class="check"><input id="hidePrice" type="checkbox" checked> Hide selling price</label>
+<label class="check"><input id="hideCalc" type="checkbox" checked> Hide calculator</label>
+</div>
+<div class="table"><div class="thead"><div>ACCOUNT</div><div>PASSWORD</div><div>MONEY</div><div>INCOME/SEC</div><div>SPEED</div><div>ITEMS</div><div>BASE</div><div>STATUS</div><div>SELLING PRICE</div></div>
+<div class="tr account"><div><div class="name user">Player_ABC</div><div class="meta">Android Bot 01</div></div><div class="password">••••••••</div><div>84.44T</div><div>503.12M/s</div><div>80</div><div>27</div><div>4/10</div><div><span class="status ready">READY</span></div><div class="private-price">Rp 3.250.000 <button class="del">🗑 HAPUS</button></div></div>
+<div class="tr account"><div><div class="name user">Player_XYZ</div><div class="meta">Samsung Bot 02</div></div><div class="password">••••••••</div><div>12.5T</div><div>250M/s</div><div>70</div><div>14</div><div>7/10</div><div><span class="status ready">READY</span></div><div class="private-price">Rp 2.150.000 <button class="del">🗑 HAPUS</button></div></div>
+<div class="tr account"><div><div class="name user">Player_RTY</div><div class="meta">Android Bot 04</div></div><div class="password">••••••••</div><div>8.4T</div><div>150M/s</div><div>55</div><div>6</div><div>3/10</div><div><span class="status sold">SOLD</span></div><div class="private-price">Rp 1.250.000 <button class="del">🗑 HAPUS</button></div></div></div>
+<div class="panel calc" id="calc"><h2>🧮 Auto Selling Calculator</h2><div class="muted">Pilih komponen yang dihitung. Selling rate manual sudah dihilangkan.</div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="503.12" data-r="1000" checked><b>Income</b><span>503.12M/s</span><input class="rate" value="1000"></div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="80" data-r="25000" checked><b>Speed</b><span>80</span><input class="rate" value="25000"></div>
+<div class="calcrow"><input class="itemcheck" type="checkbox" data-v="27" data-r="5000"><b>Items</b><span>27</span><input class="rate" value="5000"></div>
+<div class="totals"><div class="totalbox"><small>TOTAL</small><b id="total">Rp 3.503.120</b></div><div class="totalbox"><small>CALCULATED PRICE</small><b id="calculated">Rp 3.503.120</b></div></div></div></section>
+
+<section class="page" id="monitoring"><div class="head"><div><div class="eyebrow">JOSTORE · LIVE MONITORING</div><h1>Device Monitoring</h1></div></div><div class="grid3">
+<div class="panel"><b class="online">● ONLINE</b><h2>Android Bot 01</h2><div class="row"><span>Username</span><b>Player_ABC</b></div><div class="row"><span>RAM</span><b>8 GB</b></div><div class="row"><span>RAM Usage</span><b>3.8 / 8 GB · 47%</b></div><div class="row"><span>Storage</span><b>128 GB</b></div><div class="row"><span>Storage Usage</span><b>72 / 128 GB · 56%</b></div><div class="row"><span>Battery</span><b>78%</b></div><div class="row"><span>Last Seen</span><b>10:46:21</b></div></div>
+<div class="panel"><b class="online">● ONLINE</b><h2>Samsung Bot 02</h2><div class="row"><span>Username</span><b>Player_XYZ</b></div><div class="row"><span>RAM</span><b>6 GB</b></div><div class="row"><span>RAM Usage</span><b>4.1 / 6 GB · 68%</b></div><div class="row"><span>Storage</span><b>64 GB</b></div><div class="row"><span>Storage Usage</span><b>51 / 64 GB · 80%</b></div><div class="row"><span>Battery</span><b>64%</b></div><div class="row"><span>Last Seen</span><b>10:46:18</b></div></div>
+<div class="panel"><b class="offline">● OFFLINE</b><h2>Poco Bot 03</h2><div class="row"><span>Username</span><b>Player_QWE</b></div><div class="row"><span>RAM</span><b>8 GB</b></div><div class="row"><span>RAM Usage</span><b>—</b></div><div class="row"><span>Storage</span><b>128 GB</b></div><div class="row"><span>Storage Usage</span><b>91 / 128 GB · 71%</b></div><div class="row"><span>Battery</span><b>21%</b></div><div class="row"><span>Last Seen</span><b>10:39:04</b></div></div></div></section>
+
+<section class="page" id="players"><div class="head"><div><div class="eyebrow">JOSTORE · PLAYER ACCOUNTS</div><h1>Player Accounts</h1><div class="muted">Game dan map Roblox yang sedang dimainkan akan mengikuti data dari device monitoring.</div></div></div><div class="grid3">
+<div class="panel"><b class="online">● ONLINE · Android Bot 01</b><h2>Player_ABC</h2>
+<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">Steal a Brainrot</div><div class="gm-map">🗺️ Map / Place: Main Map <span class="playing">· SEDANG BERMAIN</span></div></div>
+<div class="row"><span>Eternal Lunar Dragon ×2</span><b>6.35B/s</b></div><div class="row"><span>Ice Dragon ×1</span><b>2.15B/s</b></div><div class="row"><span>Mosasaurus ×3</span><b>4.24B/s</b></div><div class="row"><span>Base</span><b>4/10</b></div><div class="row"><span>Storage</span><b>7/10</b></div></div>
+<div class="panel"><b class="online">● ONLINE · Samsung Bot 02</b><h2>Player_XYZ</h2>
+<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">Pet Simulator 99</div><div class="gm-map">🗺️ Map / Place: World 1 <span class="playing">· SEDANG BERMAIN</span></div></div>
+<div class="row"><span>Golden Dragon ×2</span><b>—</b></div><div class="row"><span>Ice Dragon ×4</span><b>—</b></div><div class="row"><span>Base</span><b>7/10</b></div></div>
+<div class="panel"><b class="offline">● OFFLINE · Poco Bot 03</b><h2>Player_QWE</h2>
+<div class="game-map"><div class="gm-label">🎮 CURRENT GAME</div><div class="gm-game">—</div><div class="gm-map">🗺️ Map / Place: —</div></div>
+<div class="row"><span>Last Game</span><b>Unavailable</b></div><div class="row"><span>Last Seen</span><b>10:39:04</b></div></div>
+</div></section>
+
+<section class="page" id="ai"><div class="head"><div><div class="eyebrow">JOSTORE · AI INPUT</div><h1>AI Input — Password Only</h1><div class="muted">Pilih akun yang sudah terdeteksi lalu isi password. AI tidak membuat akun baru.</div></div></div><div class="panel ai-grid"><div><h2>Account Terdeteksi</h2><div class="accountpick"><input type="checkbox" checked><b>Player_ABC</b><span>Android Bot 01</span></div><div class="accountpick"><input type="checkbox"><b>Player_XYZ</b><span>Samsung Bot 02</span></div><div class="accountpick"><input type="checkbox"><b>Player_QWE</b><span>Poco Bot 03</span></div><div class="accountpick"><input type="checkbox"><b>Player_RTY</b><span>Android Bot 04</span></div></div><div><h2>Password</h2><div class="accountpick"><span>Player_ABC</span><input class="pass" type="password" placeholder="Password"></div><div class="accountpick"><span>Player_XYZ</span><input class="pass" type="password" placeholder="Password"></div><button>💾 Simpan Password Terpilih</button></div></div></section>
+</main>
+<script>
+const pages=[...document.querySelectorAll('.page')], buttons=[...document.querySelectorAll('[data-page]')];
+function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));buttons.forEach(b=>b.classList.toggle('active',b.dataset.page===id))}
+buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
+const $=id=>document.getElementById(id);
+function blurSet(selector,on){document.querySelectorAll(selector).forEach(x=>x.classList.toggle('blur',on))}
+$('hideUser').onchange=e=>blurSet('.user',e.target.checked);
+$('hidePass').onchange=e=>blurSet('.password',e.target.checked);
+$('hidePrice').onchange=e=>blurSet('.private-price',e.target.checked);
+$('hideCalc').onchange=e=>$('calc').classList.toggle('hide',e.target.checked);
+$('shot').onclick=()=>{document.body.classList.toggle('shotmode');let on=document.body.classList.contains('shotmode');blurSet('.user,.password,.private-price',on);$('calc').classList.toggle('hide',on);$('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode'};
+document.querySelectorAll('.del').forEach(b=>b.onclick=()=>{if(confirm('Hapus akun ini dari Selling Accounts?'))b.closest('.account').remove()});
+function calc(){let total=0;document.querySelectorAll('.itemcheck').forEach((c,i)=>{if(c.checked)total+=(+c.dataset.v||0)*(+(document.querySelectorAll('.rate')[i].value)||0)});$('total').textContent='Rp '+Math.round(total).toLocaleString('id-ID');$('calculated').textContent='Rp '+Math.round(total).toLocaleString('id-ID')}
+document.querySelectorAll('.itemcheck,.rate').forEach(x=>x.addEventListener('input',calc));calc();
+
+// --- FITUR AUTO-DETECT VERCEL BACKEND ---
+const API_URL = "https://jostore-backend.vercel.app/api/data";
+
+async function fetchBotData() {
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        console.log("Data Bot Ter-update dari Vercel:", data);
+    } catch (error) {
+        console.error("Gagal mengambil data dari Vercel:", error);
+    }
+}
+
+// Cek otomatis setiap 5 detik
+setInterval(fetchBotData, 5000);
+fetchBotData();
+</script>
+</body></html>
