@@ -158,7 +158,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
     cursor: pointer;
 }
 
-/* RESPONSIVE TABLE STRUCTURE (Mencegah Tumpang Tindih) */
+/* RESPONSIVE TABLE STRUCTURE (Disesuaikan Rapi Tanpa Dempet) */
 .table {
     overflow-x: auto;
     background: var(--bg-panel);
@@ -168,20 +168,21 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
 
 .thead, .tr {
     display: grid;
-    /* Lebar kolom presisi agar data tidak pernah bertabrakan */
-    grid-template-columns: 1.5fr 1.1fr 1fr 0.9fr 2.2fr 1fr 1fr;
-    min-width: 1250px;
+    /* Grid 8 Kolom Presisi agar tidak bertabrakan */
+    grid-template-columns: 1.8fr 1.2fr 1.2fr 1.1fr 1.1fr 1.1fr 0.9fr 1.5fr;
+    min-width: 1280px;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
 }
 
 .thead {
-    padding: 14px 20px;
+    padding: 16px 20px;
     color: var(--gold-primary);
     font-size: 11px;
     font-weight: 800;
     border-bottom: 1px solid var(--border-gold);
     background: rgba(212, 175, 55, 0.03);
+    letter-spacing: 0.5px;
 }
 
 .tr {
@@ -218,19 +219,6 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
     font-weight: 800;
     cursor: pointer;
     margin-left: 8px;
-}
-
-/* SPESIFIKASI MINI TERPISAH DENGAN RAPI */
-.spec-mini {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.spec-mini span b {
-    color: var(--gold-light);
 }
 
 /* CALCULATOR PANEL */
@@ -282,7 +270,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
 .pass { background: var(--bg-card); border: 1px solid var(--border-gold); color: white; border-radius: 8px; padding: 8px 12px; }
 .hide { display: none !important; }
 
-/* SPEC BOX PLAYER (TERPISAH & RAPI) */
+/* SPEC BOX PLAYER */
 .game-map {
     margin-top: 12px;
     padding: 12px;
@@ -392,8 +380,9 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
                 <div>ACCOUNT & BOT</div>
                 <div>PASSWORD</div>
                 <div>INCOME / SEC</div>
-                <div>LEVEL</div>
-                <div>SPESIFIKASI DETAIL AKUN</div>
+                <div>SPEED</div>
+                <div>LV. TREADMILL</div>
+                <div>LV. PEN</div>
                 <div>STATUS</div>
                 <div>SELLING PRICE</div>
             </div>
@@ -404,7 +393,7 @@ h2 { font-size: 16px; margin: 0 0 12px; color: var(--gold-light); }
 
         <div class="panel calc" id="calc">
             <h2>🧮 Manual Rate Calculator & Specification Selection</h2>
-            <div class="muted">Pilih spesifikasi yang ingin dihitung serta sesuaikan nilai Rate-nya.</div>
+            <div class="muted">Pilih akun dan spesifikasi yang ingin dihitung serta sesuaikan nilai Rate-nya.</div>
             <div id="calc-items-list" style="margin-top:14px"></div>
             <div class="totals">
                 <div class="totalbox"><small>RAW VALUE DETECTED</small><b id="total">0</b></div>
@@ -459,7 +448,7 @@ $('shot').onclick=()=>{
     $('shot').textContent=on?'📸 Screenshot ON':'📸 Screenshot Mode';
 };
 
-// --- HELPER PARSER NUMERIK ---
+// --- HELPER PARSER NUMERIK & DETEKSI OTOMATIS ---
 function parseGameValue(val) {
     if (val === undefined || val === null) return 0;
     if (typeof val === 'number') return val;
@@ -489,6 +478,7 @@ function calculateCustomTotal() {
     
     calcRows.forEach(group => {
         const username = group.dataset.user;
+        const accCheck = group.querySelector('.check-account');
         const speedCheck = group.querySelector('.check-speed');
         const incomeCheck = group.querySelector('.check-income');
         const rateInput = group.querySelector('.rate');
@@ -498,15 +488,18 @@ function calculateCustomTotal() {
         const rate = parseFloat(rateInput.value) || 0;
 
         if (!calcState[username]) calcState[username] = {};
+        calcState[username].accChecked = accCheck ? accCheck.checked : true;
         calcState[username].speedChecked = speedCheck ? speedCheck.checked : true;
         calcState[username].incomeChecked = incomeCheck ? incomeCheck.checked : true;
         calcState[username].rate = rate;
 
-        let accSubtotal = 0;
-        if (speedCheck && speedCheck.checked) accSubtotal += speedVal;
-        if (incomeCheck && incomeCheck.checked) accSubtotal += incomeVal;
-
-        calcSum += (accSubtotal * rate);
+        // Hanya sertakan dalam kalkulasi jika CENTANG AKUN DIAKTIFKAN
+        if (accCheck && accCheck.checked) {
+            let accSubtotal = 0;
+            if (speedCheck && speedCheck.checked) accSubtotal += speedVal;
+            if (incomeCheck && incomeCheck.checked) accSubtotal += incomeVal;
+            calcSum += (accSubtotal * rate);
+        }
     });
 
     $('calculated').textContent = 'Rp ' + Math.round(calcSum).toLocaleString('id-ID');
@@ -597,17 +590,17 @@ function renderUI(bots) {
         const username = bot.username || 'Unknown Player';
         const botName = bot.bot_name || ('PC Bot - ' + username);
         const status = bot.status || 'OFFLINE';
-        const level = bot.level || bot.lvl || 1;
         const gameName = bot.game_name || 'Roblox Game';
         const mapName = bot.map_name || 'Main Map';
         const items = Array.isArray(bot.items) ? bot.items : [];
         const specs = bot.item_specs || bot.specs || {};
 
+        // Auto-detect variasi kunci spesifikasi dari JSON
         const rawMoney = parseGameValue(specs.money_balance || specs.money || bot.total_value || bot.money || 0);
         const rawIncome = parseGameValue(specs.income_sec || specs.income || bot.income || 0);
-        const rawSpeed = parseGameValue(specs.speed || 0);
-        const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || 1);
-        const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || 1);
+        const rawSpeed = parseGameValue(specs.speed || bot.speed || 0);
+        const treadmillLvl = parseGameValue(specs.treadmill_level || specs.treadmill || specs.lvl_treadmill || 1);
+        const petPenLvl = parseGameValue(specs.pet_pen || specs.pen_level || specs.lvl_pen || 1);
 
         const moneyDisplay = formatShortNumber(rawMoney);
         const incomeDisplay = formatShortNumber(rawIncome);
@@ -620,7 +613,7 @@ function renderUI(bots) {
         totalRawIncome += rawIncome;
         totalRawMoney += rawMoney;
 
-        // 1. Table Selling Accounts (Spesifikasi Terpisah Rapi)
+        // 1. Table Selling Accounts (Kolom Disesuaikan & Ikon Dihapus)
         const tr = document.createElement('div');
         tr.className = 'tr account';
         tr.innerHTML = `
@@ -629,13 +622,10 @@ function renderUI(bots) {
                 <div class="meta">${botName}</div>
             </div>
             <div class="password ${$('hidePass').checked?'blur':''}">••••••••</div>
-            <div>📈 <b>${incomeDisplay}</b>/s</div>
-            <div>⚡ Lvl ${level}</div>
-            <div class="spec-mini">
-                <span>💰 Money: <b>${moneyDisplay}</b></span>
-                <span>⚡ Speed: <b>${speedDisplay} m/b</b></span>
-                <span>🏃 Treadmill: <b>Lvl ${treadmillLvl}</b> | 🏠 Pen: <b>Lvl ${petPenLvl}</b></span>
-            </div>
+            <div><b>${incomeDisplay}</b>/s</div>
+            <div>⚡ ${speedDisplay} m/b</div>
+            <div>🏃 Lvl ${treadmillLvl}</div>
+            <div>🏠 Lvl ${petPenLvl}</div>
             <div><span class="status ${isOnline ? 'ready' : 'sold'}">${status}</span></div>
             <div class="private-price ${$('hidePrice').checked?'blur':''}">
                 Rp ${(rawIncome * 10).toLocaleString('id-ID')}
@@ -698,8 +688,8 @@ function renderUI(bots) {
         `;
         playersGrid.appendChild(pPanel);
 
-        // 4. Rate Calc
-        const savedState = calcState[username] || { speedChecked: true, incomeChecked: true, rate: 10 };
+        // 4. Rate Calc (Ditambahkan Centang Pilih Akun)
+        const savedState = calcState[username] || { accChecked: true, speedChecked: true, incomeChecked: true, rate: 10 };
         const calcRow = document.createElement('div');
         calcRow.className = 'calc-account-group';
         calcRow.dataset.user = username;
@@ -708,7 +698,9 @@ function renderUI(bots) {
         
         calcRow.innerHTML = `
             <div class="calcrow">
-                <div></div>
+                <div>
+                    <input class="check-account" type="checkbox" ${savedState.accChecked ? 'checked' : ''} onchange="calculateCustomTotal()" title="Hitung Akun Ini">
+                </div>
                 <div><b class="user ${$('hideUser').checked?'blur':''}">${username}</b> <small style="color:var(--text-muted)">(${gameName})</small></div>
                 <div><input class="rate" type="number" value="${savedState.rate}" placeholder="Rate Rp" oninput="calculateCustomTotal()"></div>
                 <div style="text-align:right;font-weight:bold;color:var(--gold-primary)">Rate Config</div>
